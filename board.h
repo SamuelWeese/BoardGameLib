@@ -16,13 +16,13 @@ class board
 {
     sf::Texture tileTexture;
     const float tileScaleFloat = TILE_SCALING;
-    int length;
-    int height;
     int padding; // in px
     boardtile *selectedTile;
     int windowLength;
     int windowHeight;
     void positionInitial();
+    int length;
+    int height;
 public:
     sf::RenderWindow *aWindow;
     std::vector<std::vector<boardtile>> gameState;

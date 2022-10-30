@@ -21,7 +21,7 @@ set( PROJECT_CPP_SOURCES
   cardunit.cpp
   boardtile.cpp
   board.cpp
-  boardobject.cpp
+  piece.cpp
   )
 
 

@@ -24,7 +24,7 @@ board::board( sf::RenderWindow *passWindow, int windowLength, int windowHeight, 
     }
     this->padding = padding; // in px
     float scaleX, scaleY;
-    scaleX = (this->windowLength - (padding*2))/(float)this->length*( this->tileScaleFloat / (float) windowDimension.x); // 95.f is scale in percent
+    scaleX = (this->windowLength - (padding*2))/(float)this->length*( this->tileScaleFloat / (float) windowDimension.x);
     scaleY = (this->windowHeight - (padding*2))/(float)this->height*( this->tileScaleFloat / (float) windowDimension.y);
     for (int x = 0; x < this->length; x++)
     {
@@ -35,7 +35,7 @@ board::board( sf::RenderWindow *passWindow, int windowLength, int windowHeight, 
             positionX = (this->windowLength -(padding*2)) / boardLength * x + padding;
             positionY = (this->windowHeight -(padding*2)) / boardHeight * y + padding;
 
-            gameState[x].push_back(boardtile(x, y, this->tileTexture));
+            gameState[x].push_back(boardtile(x, y));//, this->tileTexture));
             gameState[x][y].tileSprite.setTexture(this->tileTexture);
             gameState[x][y].tileSprite.setPosition(positionX, positionY);
             gameState[x][y].tileSprite.setScale(scaleX, scaleY);
@@ -92,7 +92,7 @@ void board::draw()
     {
         for (int y = 0; y < this->height; y++)
         {
-            this->aWindow->draw(gameState[x][y].tileSprite);
+            this->gameState[x][y].draw(aWindow);
         }
     }
 }
@@ -124,6 +124,7 @@ void board::mouseClick(int xPos, int yPos) // this function should maybe return 
             {
                 this->selectedTile = &gameState[x][y];
                 gameState[x][y].setHighlightSelected();
+                gameState[x][y].clearTile();
                 return; // currently all I want the board to do is highlight and select a tile
             }
         }

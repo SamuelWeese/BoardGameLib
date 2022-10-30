@@ -1,48 +1,48 @@
 #include "boardtile.h"
 
-#include <SFML/Graphics/Texture.hpp>
 #include <iostream>
 
 
-boardtile::boardtile(int x, int y, sf::Texture tileTexture)
+boardtile::boardtile(int x, int y)//, sf::Texture tileTexture)
 {
     this->xPos = x;
     this->yPos = y;
-    //this->tileSprite.setTexture(tileTexture, true);
-    //this->setHighlightDefault();
+    this->aPiece = new piece();
 }
 
 boardtile::~boardtile()
 {
-
     return;
 }
 
 bool boardtile::hasUnit()
 {
-    if (this->aUnit == nullptr)
+    if (this->aPiece->isDefault)
     {
         return false;
     }
     return true;
 }
 
-void boardtile::setTileUnit(boardObject &aUnit)
+void boardtile::setTileUnit(piece *aUnit)
 {
-    this->aUnit = &aUnit;
+    this->aPiece = aUnit;
 }
 void boardtile::clearTile()
 {
-    this->aUnit = nullptr;
+    this->aPiece = new piece();
 }
 
 int boardtile::getMovement()
 {
+    /*
     if (!this->hasUnit())
     {
         return 0;
     }
-    return aUnit->getMovement();
+    //return aUnit->getMovement(); TODO REMOVED MOVEMENT FROM INATE PIECE, REPLACING WITH PASSING ?FUNCTIONS?
+    return 0;*/
+    return 0;
 }
 void boardtile::setHighlightDefault()
 {
@@ -66,6 +66,12 @@ void boardtile::setHighlightMoveable()
 
 char boardtile::getFEN()
 {
-    return this->aUnit->getFEN();
+    return this->aPiece->getFEN();
 }
 
+void boardtile::draw(sf::RenderWindow *aWindow)
+{
+    aWindow->draw(this->tileSprite);
+    if (aPiece == nullptr) return;
+    this->aPiece->draw(aWindow);
+}
