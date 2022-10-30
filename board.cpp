@@ -124,7 +124,7 @@ void board::mouseClick(int xPos, int yPos) // this function should maybe return 
             {
                 this->selectedTile = &gameState[x][y];
                 gameState[x][y].setHighlightSelected();
-                return; // currently all I want the board to do is highlight
+                return; // currently all I want the board to do is highlight and select a tile
             }
         }
     }
@@ -153,14 +153,14 @@ std::string board::generateFEN()
                 C++; // :)
                 continue;
             }
-            if (counter > 0)
+            if (C > 0)
             {
-                retStr += std::to_string(counter);
-                counter = 0;
+                retStr += std::to_string(C);
+                C = 0;
             }
             retStr += gameState[x][y].getFEN();
         }
-        retStr += "/"
+        retStr += "/";
     }
     return retStr;
 }
