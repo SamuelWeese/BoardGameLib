@@ -22,6 +22,7 @@ public:
     void setHighlightSelected();
     void setHighlightAttacked();
     void setHighlightMoveable();
+    char getFEN();
 };
 
 #endif // BOARDTILE_H

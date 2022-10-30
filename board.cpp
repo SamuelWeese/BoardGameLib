@@ -1,10 +1,10 @@
 #include "board.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "preloadTextures.h"
 #include <limits>
 
 #define TESTING_IMAGE_SIZE 1024
+#define ASCII_SPACE_CHAR 32
 
 //extern sf::Texture global_tile_texure_missing;
 
@@ -24,21 +24,21 @@ board::board( sf::RenderWindow *passWindow, int windowLength, int windowHeight, 
     }
     this->padding = padding; // in px
     float scaleX, scaleY;
-    scaleX = (this->windowLength - (padding*2))/(float)boardLength*( this->tileScaleFloat / (float) windowDimension.x); // 95.f is scale in percent
-    scaleY = (this->windowHeight - (padding*2))/(float)boardHeight*( this->tileScaleFloat / (float) windowDimension.y);
+    scaleX = (this->windowLength - (padding*2))/(float)this->length*( this->tileScaleFloat / (float) windowDimension.x); // 95.f is scale in percent
+    scaleY = (this->windowHeight - (padding*2))/(float)this->height*( this->tileScaleFloat / (float) windowDimension.y);
     for (int x = 0; x < this->length; x++)
     {
         gameState.push_back(std::vector<boardtile>());
         for (int y = 0; y < this->height; y++)
         {
             int positionX, positionY;
-            positionX = (this->windowLength -(padding*2)) * 1/boardLength * x + padding;
-            positionY = (this->windowHeight -(padding*2)) * 1/boardHeight * y + padding;
+            positionX = (this->windowLength -(padding*2)) / boardLength * x + padding;
+            positionY = (this->windowHeight -(padding*2)) / boardHeight * y + padding;
 
             gameState[x].push_back(boardtile(x, y, this->tileTexture));
             gameState[x][y].tileSprite.setTexture(this->tileTexture);
-            gameState[x][y].tileSprite.setPosition(positionX, positionY); // all hard coded numbers need to be replaced
-            gameState[x][y].tileSprite.setScale(scaleX, scaleY); // this too TODO SLASHER
+            gameState[x][y].tileSprite.setPosition(positionX, positionY);
+            gameState[x][y].tileSprite.setScale(scaleX, scaleY);
         }
     }
 }
@@ -109,22 +109,20 @@ void board::mouseClick(int xPos, int yPos) // this function should maybe return 
     // finding closest square
     // not sure if I want this to select exact square or just closest
     // exact, click must be within the bounds of a square
-    // selection is wrong
-    int tileLength = 1000; // don't hardcode wtf
-    int tileHeight = 1000;
     auto windowSize = this->aWindow->getSize();
+    int tileLength = ((windowSize.x - this->padding*2) / (this->length));
+    int tileHeight = ((windowSize.y - this->padding*2) / (this->height));
     for (int x = 0; x < gameState.size(); x++)
     {
         for (int y = 0; y < gameState[x].size(); y++)
         {
-            int tilePosX = (windowSize.x - this->padding*2) / this->length * x * tileScaleFloat;
-            int tilePosY = (windowSize.y - this->padding*2) / this->length * y * tileScaleFloat;
-            std::cout << "Compared against:" << tilePosX << std::endl;
-            std::cout << "Compared against:" << tilePosY << std::endl;
+            int tilePosX = ((windowSize.x - this->padding*2) / (this->length)) * x + padding;
+            int tilePosY = ((windowSize.y - this->padding*2) / (this->height)) * y + padding;
 
-            if ((tilePosX - xPos) < tileLength && (tilePosY-yPos) < tileHeight &&
-                (tilePosX - xPos) > 0          && (tilePosY - yPos) > 0)
+            if ((xPos - tilePosX) < tileLength && (yPos-tilePosY) < tileHeight
+            &&  (xPos - tilePosX) > 0          && (yPos-tilePosY) > 0)
             {
+                this->selectedTile = &gameState[x][y];
                 gameState[x][y].setHighlightSelected();
                 return; // currently all I want the board to do is highlight
             }
@@ -140,6 +138,32 @@ void board::mouseClick(int xPos, int yPos) // this function should maybe return 
 
 }
 
+
+std::string board::generateFEN()
+{
+    std::string retStr = "";
+    unsigned short C; // terrible naming convention for a joke
+    for (int x = 0; x < gameState.size(); x++)
+    {
+        for (int y = 0; y < gameState[x].size(); y++)
+        {
+            char returnedFEN = gameState[x][y].getFEN();
+            if (returnedFEN == ASCII_SPACE_CHAR)
+            {
+                C++; // :)
+                continue;
+            }
+            if (counter > 0)
+            {
+                retStr += std::to_string(counter);
+                counter = 0;
+            }
+            retStr += gameState[x][y].getFEN();
+        }
+        retStr += "/"
+    }
+    return retStr;
+}
 void keepSquare()
 {
 

@@ -6,7 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
-#include "preloadTextures.h"
+#include <string>
 
 #define BOARD_LENGTH 8
 #define BOARD_HEIGHT 8
@@ -36,6 +36,9 @@ public:
     void generateAttackableSquares(boardtile &selectedTile);
     void clearBoardHighlights();
     void moveUnit(int x, int y, int X2, int Y2);
+    std::string generateFEN();
+    virtual void inputFEN();
+
 };
 
 #endif // BOARD_H

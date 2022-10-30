@@ -9,3 +9,8 @@ int boardObject::getMovement()
 {
     return movement;
 }
+
+char boardObject::getFEN()
+{
+    return this->fenChar;
+}

@@ -64,3 +64,8 @@ void boardtile::setHighlightMoveable()
     this->tileSprite.setColor(sf::Color(0,0,255,64));
 }
 
+char boardtile::getFEN()
+{
+    return this->aUnit->getFEN();
+}
+
