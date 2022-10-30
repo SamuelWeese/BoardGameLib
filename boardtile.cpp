@@ -27,10 +27,12 @@ bool boardtile::hasUnit()
 void boardtile::setTileUnit(piece *aUnit)
 {
     this->aPiece = aUnit;
+    this->positionChild();
 }
 void boardtile::clearTile()
 {
     this->aPiece = new piece();
+    this->positionChild();
 }
 
 int boardtile::getMovement()
@@ -67,6 +69,16 @@ void boardtile::setHighlightMoveable()
 char boardtile::getFEN()
 {
     return this->aPiece->getFEN();
+}
+
+void boardtile::positionChild()
+{
+    auto coordinates = this->tileSprite.getPosition();
+    this->aPiece->tileSprite.setPosition(coordinates.x, coordinates.y);
+}
+void boardtile::positionChild(int x, int y)
+{
+    this->aPiece->tileSprite.setPosition(x, y);
 }
 
 void boardtile::draw(sf::RenderWindow *aWindow)

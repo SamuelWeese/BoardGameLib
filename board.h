@@ -2,7 +2,6 @@
 #define BOARD_H
 #include <SFML/Window/Mouse.hpp>
 #include "boardtile.h"
-#include "boardobject.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
