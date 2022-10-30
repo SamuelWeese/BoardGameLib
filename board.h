@@ -27,7 +27,7 @@ public:
     sf::RenderWindow *aWindow;
     std::vector<std::vector<boardtile>> gameState;
     board(sf::RenderWindow *aWindow, int windowLength, int windowHeight, int boardLength = BOARD_LENGTH, int boardHeight = BOARD_HEIGHT, int padding = BOARD_PADDING);
-    ~board();
+    virtual ~board();
     void draw();
     int getDistanceFromSquare(boardtile &selectedTile, boardtile &anotherTile);
     void mouseClick(int a, int b);
@@ -37,7 +37,7 @@ public:
     void clearBoardHighlights();
     void moveUnit(int x, int y, int X2, int Y2);
     std::string generateFEN();
-    virtual void inputFEN();
+    virtual void inputFEN() {return;} // add default lookup function later
 
 };
 
