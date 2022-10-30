@@ -4,9 +4,6 @@
 #include <limits>
 
 #define TESTING_IMAGE_SIZE 1024
-#define ASCII_SPACE_CHAR 32
-
-//extern sf::Texture global_tile_texure_missing;
 
 board::board( sf::RenderWindow *passWindow, int windowLength, int windowHeight, int boardLength, int boardHeight, int padding)
 {
@@ -149,7 +146,7 @@ std::string board::generateFEN()
         for (int y = 0; y < gameState[x].size(); y++)
         {
             char returnedFEN = gameState[x][y].getFEN();
-            if (returnedFEN == ASCII_SPACE_CHAR)
+            if (returnedFEN == ASCII_SPACE_DEFAULT_FEN_CHAR)
             {
                 C++; // :)
                 continue;

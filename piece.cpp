@@ -1,8 +1,7 @@
 #include "piece.h"
-
 piece::piece()
 {
-    isDefault = true;
+    fenChar = ASCII_SPACE_DEFAULT_FEN_CHAR;
     return;
 }
 piece::piece(sf::Texture *aTexture)

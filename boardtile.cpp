@@ -17,7 +17,7 @@ boardtile::~boardtile()
 
 bool boardtile::hasUnit()
 {
-    if (this->aPiece.isDefault)
+    if (this->aPiece.getFEN() == ASCII_SPACE_DEFAULT_FEN_CHAR)
     {
         return false;
     }
