@@ -7,7 +7,7 @@
 
 class boardtile
 {
-    piece *aPiece;
+    piece aPiece;
 public:
     sf::Sprite tileSprite;
     int xPos;

@@ -7,7 +7,7 @@ boardtile::boardtile(int x, int y)//, sf::Texture tileTexture)
 {
     this->xPos = x;
     this->yPos = y;
-    this->aPiece = new piece();
+    this->aPiece = piece();
 }
 
 boardtile::~boardtile()
@@ -17,7 +17,7 @@ boardtile::~boardtile()
 
 bool boardtile::hasUnit()
 {
-    if (this->aPiece->isDefault)
+    if (this->aPiece.isDefault)
     {
         return false;
     }
@@ -26,12 +26,12 @@ bool boardtile::hasUnit()
 
 void boardtile::setTileUnit(piece *aUnit)
 {
-    this->aPiece = aUnit;
+    this->aPiece = *aUnit;
     this->positionChild();
 }
 void boardtile::clearTile()
 {
-    this->aPiece = new piece();
+    this->aPiece = piece();
     this->positionChild();
 }
 
@@ -68,22 +68,21 @@ void boardtile::setHighlightMoveable()
 
 char boardtile::getFEN()
 {
-    return this->aPiece->getFEN();
+    return this->aPiece.getFEN();
 }
 
 void boardtile::positionChild()
 {
     auto coordinates = this->tileSprite.getPosition();
-    this->aPiece->tileSprite.setPosition(coordinates.x, coordinates.y);
+    this->aPiece.tileSprite.setPosition(coordinates.x, coordinates.y);
 }
 void boardtile::positionChild(int x, int y)
 {
-    this->aPiece->tileSprite.setPosition(x, y);
+    this->aPiece.tileSprite.setPosition(x, y);
 }
 
 void boardtile::draw(sf::RenderWindow *aWindow)
 {
     aWindow->draw(this->tileSprite);
-    if (aPiece == nullptr) return;
-    this->aPiece->draw(aWindow);
+    this->aPiece.draw(aWindow);
 }

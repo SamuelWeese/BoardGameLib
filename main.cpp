@@ -15,7 +15,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(windowSizeLength, windowSizeHeight), "SFML window");
     board aBoard(&window, windowSizeLength, windowSizeHeight);
     piece aPiece(&whitePawn);
-    aPiece.setSpriteTexture(&whitePawn, 100, 100);
+    aPiece.setSpriteTexture(&whitePawn);
     for (int x = 0; x < aBoard.gameState.size(); x++)
     {
         for (int y = 0; y < aBoard.gameState[x].size(); y++)
