@@ -42,7 +42,7 @@ void boardtile::setHighlightSelected()
     this->tileSprite.setColor(sf::Color(255,255,0,128));
 }
 
-void boardtile::setHighlightAttacked()
+void boardtile::setHighlightAttackable()
 {
     this->tileSprite.setColor(sf::Color(255,0,255,128));
 }

@@ -2,14 +2,13 @@
 #define CHESS_H
 #include "board.h"
 
-#define CHESS_LENGTH 12
+#define CHESS_LENGTH 8
 
 enum player { black, white, none};
 
 class chess : public board
 {
     sf::Texture chessPieces;
-    sf::Texture chessTiles;
     // below should probably be some form of const static for vanilla chess, but these pieces are extendable
     piece wPawn;
     piece wRook;
@@ -24,6 +23,7 @@ class chess : public board
     piece bQueen;
     piece bKing;
 
+    player getPlayer(char aChar);
 
     //
     bool safetyCheck(int x, int y);

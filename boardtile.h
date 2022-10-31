@@ -18,7 +18,7 @@ public:
     void clearTile();
     void setHighlightDefault();
     void setHighlightSelected();
-    void setHighlightAttacked();
+    void setHighlightAttackable();
     void setHighlightMoveable();
     char getFEN(){ return this->aPiece.getFEN();};
     piece getPiece() {return this->aPiece;}
