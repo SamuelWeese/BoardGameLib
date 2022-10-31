@@ -80,11 +80,8 @@ void board::draw()
         }
     }
 }
-boardtile *board::mouseClick(int xPos, int yPos) // this function should maybe return a square or something?
-// so that other libs can use it better
+boardtile *board::mouseClick(int xPos, int yPos)
 {
-    this->clearBoardHighlights();
-    // finding closest square
     // not sure if I want this to select exact square or just closest
     // exact, click must be within the bounds of a square
     auto windowSize = this->aWindow->getSize();
@@ -101,8 +98,8 @@ boardtile *board::mouseClick(int xPos, int yPos) // this function should maybe r
             &&  (xPos - tilePosX) > 0          && (yPos-tilePosY) > 0)
             {
                 this->selectedTile = &gameState[x][y];
-                gameState[x][y].setHighlightSelected();
                 return &this->gameState[x][y]; // currently all I want the board to do is highlight and select a tile
+                // returning allows users to do more faster, and to change board behavior if a tile is not clicked
             }
         }
     }
