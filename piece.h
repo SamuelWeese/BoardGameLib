@@ -12,16 +12,17 @@ class piece
     // default char is currently 32
     // leaves ascii 33 to 47 and ascii 58 to 254 available
     char fenChar;
-    // movement
 
 public:
     sf::Sprite tileSprite;
     piece();
+    virtual ~piece(){return;};
     piece(sf::Texture *aTexture);
     piece(sf::Texture *aTexture, char aChar);
     char getFEN();
     void draw(sf::RenderWindow *aWindow);
     void setSpriteTexture(sf::Texture *aTexture);
+    virtual void movement(){return;}
 };
 
 #endif // PIECE_H
