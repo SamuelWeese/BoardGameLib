@@ -121,7 +121,6 @@ void board::mouseClick(int xPos, int yPos) // this function should maybe return 
             {
                 this->selectedTile = &gameState[x][y];
                 gameState[x][y].setHighlightSelected();
-                gameState[x][y].clearTile();
                 return; // currently all I want the board to do is highlight and select a tile
             }
         }
@@ -131,6 +130,7 @@ void board::mouseClick(int xPos, int yPos) // this function should maybe return 
     int smallestDistance = INT_MAX;
     distanceToSquare = a*a + b*b
     distanceToSquare = distanceToSquare**/
+    // I think I like select exact enough to not implement closest, I will probably do this another weekend TODO
 
 
 
