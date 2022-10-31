@@ -1,6 +1,4 @@
 #include "board.h"
-#include <iostream>
-#include <limits>
 
 #define TESTING_IMAGE_SIZE 1024
 

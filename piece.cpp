@@ -1,4 +1,5 @@
 #include "piece.h"
+
 piece::piece()
 {
     fenChar = ASCII_SPACE_DEFAULT_FEN_CHAR;

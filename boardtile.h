@@ -1,6 +1,6 @@
 #ifndef BOARDTILE_H
 #define BOARDTILE_H
-#include <SFML/Graphics.hpp>
+
 #include "piece.h"
 
 class boardtile

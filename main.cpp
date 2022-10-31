@@ -1,5 +1,5 @@
-#include <SFML/Graphics.hpp>
 #include "board.h"
+#include <iostream>
 
 int main()
 {

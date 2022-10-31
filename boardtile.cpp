@@ -1,8 +1,5 @@
 #include "boardtile.h"
 
-#include <iostream>
-
-
 boardtile::boardtile(int x, int y)//, sf::Texture tileTexture)
 {
     this->xPos = x;

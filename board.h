@@ -1,16 +1,16 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include <SFML/Window/Mouse.hpp>
+
 #include "boardtile.h"
-#include <SFML/Graphics.hpp>
+
 #include <vector>
-#include <iostream>
 #include <string>
 
 #define BOARD_LENGTH 8
 #define BOARD_HEIGHT 8
 #define BOARD_PADDING 10
 #define TILE_SCALING 0.95f
+
 class board
 {
     sf::Texture tileTexture;
