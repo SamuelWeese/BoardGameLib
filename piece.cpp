@@ -5,11 +5,6 @@ piece::piece()
     fenChar = ASCII_SPACE_DEFAULT_FEN_CHAR;
     return;
 }
-piece::piece(sf::Texture *aTexture)
-{
-    this->setSpriteTexture(aTexture);
-}
-
 
 piece::piece(sf::Texture *aTexture, char aChar)
 {
@@ -34,4 +29,10 @@ char piece::getFEN()
 void piece::setSpriteTexture(sf::Texture *aTexture)
 {
     this->tileSprite.setTexture(*aTexture);
+}
+
+void piece::setSpriteTextureRect(sf::Texture *aTexture, sf::IntRect aRect)
+{
+    this->tileSprite.setTexture(*aTexture);
+    this->tileSprite.setTextureRect(aRect);
 }

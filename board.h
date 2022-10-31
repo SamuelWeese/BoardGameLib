@@ -26,7 +26,7 @@ protected:
 public:
     sf::RenderWindow *aWindow;
     std::vector<std::vector<boardtile>> gameState;
-    board(sf::RenderWindow *aWindow, std::string pathToTexture = "", int boardLength = BOARD_LENGTH,
+    explicit board(sf::RenderWindow *aWindow, std::string pathToTexture = "", int boardLength = BOARD_LENGTH,
           int boardHeight = BOARD_HEIGHT, int padding = BOARD_PADDING);
     virtual ~board() {return;}
     void setUpInitialBoard();
@@ -36,8 +36,9 @@ public:
     boardtile* mouseClick(int a, int b);
     void clearBoardHighlights();
     std::string generateFEN();
-    virtual void inputFEN() {return;} // add default lookup function later
+    virtual void readFEN(std::string) {return;} // add default lookup function later
     virtual void initialPosition() {return;}
+    virtual void placePiece(char, int, int) {return;}
 protected:
     virtual void generateAttackableSquares(boardtile &selectedTile) {return;}
     virtual void moveUnit(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile);

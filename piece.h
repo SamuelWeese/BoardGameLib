@@ -25,6 +25,7 @@ public:
     char getFEN();
     void draw(sf::RenderWindow *aWindow);
     virtual void setSpriteTexture(sf::Texture *aTexture);
+    void setSpriteTextureRect(sf::Texture *aTexture, sf::IntRect aRect);
 };
 
 #endif // PIECE_H
