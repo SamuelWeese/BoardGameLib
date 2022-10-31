@@ -3,8 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include "piece.h"
 
-#define DEFAULT_TEXTURE
-
 class boardtile
 {
     piece aPiece;
@@ -22,7 +20,8 @@ public:
     void setHighlightSelected();
     void setHighlightAttacked();
     void setHighlightMoveable();
-    char getFEN();
+    char getFEN(){ return this->aPiece.getFEN();};
+    piece getPiece() {return this->aPiece;}
     void positionChild(); void positionChild(int x, int y);
     void draw(sf::RenderWindow *aWindow); // this should probably share a class with piece
     // draw is identical to piece.draw

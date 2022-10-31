@@ -51,27 +51,6 @@ int board::getDistanceFromSquare(boardtile &selectedTile, boardtile &anotherTile
     return x + y;
 }
 
-void board::generateAttackableSquares(boardtile &selectedTile)
-{
-    for (int x = 0; x < this->length; x++)
-    {
-        for (int y = 0; y < this->height; y++)
-        {
-            if (this->getDistanceFromSquare(selectedTile, this->gameState[x][y]) <= selectedTile.getMovement())
-            {
-                if (gameState[x][y].hasUnit())
-                {
-                    gameState[x][y].setHighlightAttacked();
-                }
-                else
-                {
-                    gameState[x][y].setHighlightMoveable();
-                }
-            }
-        }
-    }
-}
-
 void board::clearBoardHighlights()
 {
     for (int x = 0; x < this->length; x++)

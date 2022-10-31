@@ -35,20 +35,9 @@ void boardtile::clearTile()
     this->positionChild();
 }
 
-int boardtile::getMovement()
-{
-    /*
-    if (!this->hasUnit())
-    {
-        return 0;
-    }
-    //return aUnit->getMovement(); TODO REMOVED MOVEMENT FROM INATE PIECE, REPLACING WITH PASSING ?FUNCTIONS?
-    return 0;*/
-    return 0;
-}
 void boardtile::setHighlightDefault()
 {
-    this->tileSprite.setColor(sf::Color(255,255,255,128));// white with it being 3/4 transparent
+    this->tileSprite.setColor(sf::Color(255,255,255,128));// white with it being 1/2 transparent
 }
 
 void boardtile::setHighlightSelected()
@@ -64,11 +53,6 @@ void boardtile::setHighlightAttacked()
 void boardtile::setHighlightMoveable()
 {
     this->tileSprite.setColor(sf::Color(0,0,255,128));
-}
-
-char boardtile::getFEN()
-{
-    return this->aPiece.getFEN();
 }
 
 void boardtile::positionChild()
