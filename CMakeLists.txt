@@ -17,8 +17,6 @@ find_package(SFML 2.5
 
 set( PROJECT_CPP_SOURCES
   main.cpp
-  cardbase.cpp
-  cardunit.cpp
   boardtile.cpp
   board.cpp
   piece.cpp
