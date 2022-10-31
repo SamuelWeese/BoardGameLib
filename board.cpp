@@ -9,9 +9,11 @@ board::board( sf::RenderWindow *passWindow, std::string pathToTexture, int board
     this->height = boardHeight;
     this->length = boardLength;
     this->padding = padding; // in px
+}
 
+void board::setUpInitialBoard()
+{
     auto windowDimension = aWindow->getSize();
-
     float scaleX, scaleY; // windowSize - padding * 2 is to ensure tile only in the "play space"
     // divided by number of tile, then multiplied by th
     scaleX = (windowDimension.x - (padding*2))/(float)this->length*( this->tileScaleFloat / (float) windowDimension.x);
@@ -34,7 +36,6 @@ board::board( sf::RenderWindow *passWindow, std::string pathToTexture, int board
         }
     }
 }
-
 
 void board::setTileTexture(std::string pathToTexture)
 {
@@ -98,6 +99,7 @@ boardtile *board::mouseClick(int xPos, int yPos)
             &&  (xPos - tilePosX) > 0          && (yPos-tilePosY) > 0)
             {
                 this->selectedTile = &gameState[x][y];
+                gameState[x][y].setHighlightSelected(); // TODO remove final version, used for testing
                 return &this->gameState[x][y]; // currently all I want the board to do is highlight and select a tile
                 // returning allows users to do more faster, and to change board behavior if a tile is not clicked
             }
