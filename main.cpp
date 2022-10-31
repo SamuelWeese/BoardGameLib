@@ -1,4 +1,4 @@
-#include "board.h"
+#include "chess.h"
 #include <iostream>
 
 int main()
@@ -13,7 +13,7 @@ int main()
         // error...
     }
     sf::RenderWindow window(sf::VideoMode(windowSizeLength, windowSizeHeight), "SFML window");
-    board aBoard(&window);
+    chess aBoard(&window);
     piece aPiece(&whitePawn);
     aPiece.setSpriteTexture(&whitePawn);
     for (int x = 0; x < aBoard.gameState.size(); x++)

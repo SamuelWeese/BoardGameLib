@@ -12,18 +12,19 @@ class piece
     // Currently: numerals, ASCII 0-31 (specials like null), space (ascii 32)
     // default char is currently 32
     // leaves ascii 33 to 47 and ascii 58 to 254 available
+protected:
     char fenChar;
 
 public:
     sf::Sprite tileSprite;
+
     piece();
     virtual ~piece(){return;};
     piece(sf::Texture *aTexture);
     piece(sf::Texture *aTexture, char aChar);
     char getFEN();
     void draw(sf::RenderWindow *aWindow);
-    void setSpriteTexture(sf::Texture *aTexture);
-    virtual void movement(){return;}
+    virtual void setSpriteTexture(sf::Texture *aTexture);
 };
 
 #endif // PIECE_H

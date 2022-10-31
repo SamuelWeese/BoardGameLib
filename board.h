@@ -13,6 +13,7 @@
 
 class board
 {
+protected:
     sf::Texture tileTexture;
     const float tileScaleFloat = TILE_SCALING;
     int padding; // in px
@@ -25,7 +26,7 @@ class board
 public:
     sf::RenderWindow *aWindow;
     std::vector<std::vector<boardtile>> gameState;
-    board(sf::RenderWindow *aWindow, std::string pathToTexture = "", int boardLength = BOARD_LENGTH,
+    explicit board(sf::RenderWindow *aWindow, std::string pathToTexture = "", int boardLength = BOARD_LENGTH,
           int boardHeight = BOARD_HEIGHT, int padding = BOARD_PADDING);
     virtual ~board() {return;}
     void setTileTexture(std::string pathToTexture);
@@ -36,7 +37,7 @@ public:
     std::string generateFEN();
     virtual void inputFEN() {return;} // add default lookup function later
     virtual void initialPosition() {return;}
-private:
+protected:
     virtual void generateAttackableSquares(boardtile &selectedTile) {return;}
     virtual void moveUnit(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile);
 
