@@ -25,18 +25,20 @@ class board
 public:
     sf::RenderWindow *aWindow;
     std::vector<std::vector<boardtile>> gameState;
-    board(sf::RenderWindow *aWindow, int windowLength, int windowHeight, int boardLength = BOARD_LENGTH, int boardHeight = BOARD_HEIGHT, int padding = BOARD_PADDING);
-    virtual ~board();
+    board(sf::RenderWindow *aWindow, std::string pathToTexture = "", int boardLength = BOARD_LENGTH,
+          int boardHeight = BOARD_HEIGHT, int padding = BOARD_PADDING);
+    virtual ~board() {return;}
+    void setTileTexture(std::string pathToTexture);
+    bool setTileTexture();
     void draw();
-    int getDistanceFromSquare(boardtile &selectedTile, boardtile &anotherTile);
     void mouseClick(int a, int b);
-    void mouseRightClick();
-    void resetClick();
-    void generateAttackableSquares(boardtile &selectedTile);
     void clearBoardHighlights();
-    void moveUnit(int x, int y, int X2, int Y2);
     std::string generateFEN();
     virtual void inputFEN() {return;} // add default lookup function later
+    virtual void initialPosition() {return;}
+private:
+    virtual void generateAttackableSquares(boardtile &selectedTile) {return;}
+    virtual void moveUnit(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile);
 
 };
 

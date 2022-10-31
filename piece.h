@@ -2,6 +2,7 @@
 #define PIECE_H
 
 #include <SFML/Graphics.hpp>
+#include <stdexcept>
 
 #define ASCII_SPACE_DEFAULT_FEN_CHAR 32
 

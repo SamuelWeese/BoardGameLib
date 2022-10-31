@@ -24,9 +24,9 @@ bool boardtile::hasUnit()
     return true;
 }
 
-void boardtile::setTileUnit(piece *aUnit)
+void boardtile::setPiece(piece aPiece)
 {
-    this->aPiece = *aUnit;
+    this->aPiece = aPiece;
     this->positionChild();
 }
 void boardtile::clearTile()

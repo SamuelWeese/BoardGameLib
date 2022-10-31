@@ -12,10 +12,10 @@ piece::piece(sf::Texture *aTexture)
 
 piece::piece(sf::Texture *aTexture, char aChar)
 {
-    if (aChar < 33) // guarding against bad character setting, see piece.h for reasons
+    if (aChar < 33 ||
+       (aChar < 52 && aChar > 47)) // guarding against bad character setting, see piece.h for reasons
     {
-        fenChar = ASCII_SPACE_DEFAULT_FEN_CHAR; // same as piece();
-        return;
+        throw std::runtime_error("Bad Character Value in Piece Constructor.");
     }
     this->fenChar = aChar;
     this->setSpriteTexture(aTexture);

@@ -13,14 +13,14 @@ int main()
         // error...
     }
     sf::RenderWindow window(sf::VideoMode(windowSizeLength, windowSizeHeight), "SFML window");
-    board aBoard(&window, windowSizeLength, windowSizeHeight);
+    board aBoard(&window);
     piece aPiece(&whitePawn);
     aPiece.setSpriteTexture(&whitePawn);
     for (int x = 0; x < aBoard.gameState.size(); x++)
     {
         for (int y = 0; y < aBoard.gameState[x].size(); y++)
         {
-            aBoard.gameState[x][y].setTileUnit(&aPiece);
+            aBoard.gameState[x][y].setPiece(aPiece);
         }
     }
     while (window.isOpen())

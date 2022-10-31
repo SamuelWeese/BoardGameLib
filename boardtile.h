@@ -10,11 +10,11 @@ public:
     sf::Sprite tileSprite;
     int xPos;
     int yPos;
-    boardtile(int x , int y);//, sf::Texture tileTexture); // this contains hard coded sprite for board
+    boardtile(int x , int y);
     ~boardtile();
     bool hasUnit();
     int getMovement();
-    void setTileUnit(piece *aUnit); // check this, might be cause crash
+    void setPiece(piece aPiece);
     void clearTile();
     void setHighlightDefault();
     void setHighlightSelected();
@@ -23,8 +23,7 @@ public:
     char getFEN(){ return this->aPiece.getFEN();};
     piece getPiece() {return this->aPiece;}
     void positionChild(); void positionChild(int x, int y);
-    void draw(sf::RenderWindow *aWindow); // this should probably share a class with piece
-    // draw is identical to piece.draw
+    void draw(sf::RenderWindow *aWindow); // draw is identical to piece.draw, not sharing class due to file confusion/readability
 };
 
 #endif // BOARDTILE_H
