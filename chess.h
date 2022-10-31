@@ -4,11 +4,13 @@
 
 #define CHESS_LENGTH 12
 
+enum player { black, white, none};
+
 class chess : public board
 {
     sf::Texture chessPieces;
     sf::Texture chessTiles;
-    // below should probably be some form of const static for vanilla chess
+    // below should probably be some form of const static for vanilla chess, but these pieces are extendable
     piece wPawn;
     piece wRook;
     piece wKnight;
@@ -21,6 +23,21 @@ class chess : public board
     piece bBishop;
     piece bQueen;
     piece bKing;
+
+
+    //
+    bool safetyCheck(int x, int y);
+    void setTileHighlight(int x, int y);
+    // functors
+    void pawnMovement(player aColor);
+    void knightMovement(player aColor);
+
+    void rookMovement(player aColor);
+    void bishopMovement(player aColor);
+    void queenMovement(player aColor);
+
+    void kingMovement(player aColor);
+
 public:
     explicit chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 

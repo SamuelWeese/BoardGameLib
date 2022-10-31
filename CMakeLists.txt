@@ -16,13 +16,13 @@ find_package(SFML 2.5
     system window graphics network audio REQUIRED)
 
 set( PROJECT_CPP_SOURCES
-  main.cpp
   boardtile.cpp
   board.cpp
   piece.cpp
   )
 
 set ( TEMP_CPP_TESTING_SOURCES
+  main.cpp
   chess.cpp
   )
 
