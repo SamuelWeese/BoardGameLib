@@ -80,7 +80,7 @@ void board::draw()
         }
     }
 }
-void board::mouseClick(int xPos, int yPos) // this function should maybe return a square or something?
+boardtile *board::mouseClick(int xPos, int yPos) // this function should maybe return a square or something?
 // so that other libs can use it better
 {
     this->clearBoardHighlights();
@@ -102,10 +102,12 @@ void board::mouseClick(int xPos, int yPos) // this function should maybe return 
             {
                 this->selectedTile = &gameState[x][y];
                 gameState[x][y].setHighlightSelected();
-                return; // currently all I want the board to do is highlight and select a tile
+                return &this->gameState[x][y]; // currently all I want the board to do is highlight and select a tile
             }
         }
     }
+    // no tile selected
+    return nullptr;
 
     /*
     int smallestDistance = INT_MAX;

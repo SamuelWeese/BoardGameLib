@@ -32,7 +32,7 @@ public:
     void setTileTexture(std::string pathToTexture);
     bool setTileTexture();
     void draw();
-    void mouseClick(int a, int b);
+    boardtile* mouseClick(int a, int b);
     void clearBoardHighlights();
     std::string generateFEN();
     virtual void inputFEN() {return;} // add default lookup function later
