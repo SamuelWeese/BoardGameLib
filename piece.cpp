@@ -6,7 +6,7 @@ piece::piece()
     return;
 }
 
-piece::piece(sf::Texture *aTexture, char aChar)
+piece::piece(char aChar, sf::Texture *aTexture)
 {
     if (aChar < 33 ||
        (aChar < 52 && aChar > 47)) // guarding against bad character setting, see piece.h for reasons
@@ -15,6 +15,17 @@ piece::piece(sf::Texture *aTexture, char aChar)
     }
     this->fenChar = aChar;
     this->setSpriteTexture(aTexture);
+}
+
+piece::piece(char aChar, sf::Texture *aTexture, sf::IntRect aRect)
+{
+    if (aChar < 33 ||
+       (aChar < 52 && aChar > 47)) // guarding against bad character setting, see piece.h for reasons
+    {
+        throw std::runtime_error("Bad Character Value in Piece Constructor.");
+    }
+    this->fenChar = aChar;
+    this->setSpriteTextureRect(aTexture, aRect);
 }
 void piece::draw(sf::RenderWindow *aWindow)
 {

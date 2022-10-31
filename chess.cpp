@@ -6,7 +6,7 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     this->height = CHESS_LENGTH;
 
     // setting up textures
-    if (!chessPieces.loadFromFile("/tmp/chessPieces.png"))
+    if (!chessPieces.loadFromFile("/tmp/tiletexture.png"))
     {
          throw std::runtime_error("Bad piece sprite texture path.");
     }
@@ -17,21 +17,21 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     }
 
     // setting up piece literals
-    wPawn.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,1000));
-    wRook.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    wKnight.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    wBishop.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    wQueen.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    wKing.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    bPawn.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    bRook.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    bKnight.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    bBishop.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    bQueen.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
-    bKing.setSpriteTextureRect(&chessPieces, sf::IntRect(10,10,100,100));
+    wPawn = piece('P', &chessPieces, sf::IntRect(10,10,100,100));
+    wRook = piece('R', &chessPieces, sf::IntRect(10,10,100,100));
+    wKnight = piece('N', &chessPieces, sf::IntRect(10,10,100,100));
+    wBishop = piece('B', &chessPieces, sf::IntRect(10,10,100,100));
+    wQueen = piece('Q', &chessPieces, sf::IntRect(10,10,100,100));
+    wKing = piece('K', &chessPieces, sf::IntRect(10,10,100,100));
+    bPawn = piece('p', &chessPieces, sf::IntRect(10,10,100,100));
+    bRook = piece('r', &chessPieces, sf::IntRect(10,10,100,100));
+    bKnight = piece('n', &chessPieces, sf::IntRect(10,10,100,100));
+    bBishop = piece('b', &chessPieces, sf::IntRect(10,10,100,100));
+    bQueen = piece('q', &chessPieces, sf::IntRect(10,10,100,100));
+    bKing = piece('k', &chessPieces, sf::IntRect(10,10,100,100));
 
-    this->readFEN(FEN);
     this->setUpInitialBoard();
+    this->readFEN(FEN);
 }
 
 player chess::getPlayer(char aChar)
