@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(CardsOnBattleField LANGUAGES CXX)
+project(BoardGameLib LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -27,6 +27,6 @@ set( PROJECT_CPP_SOURCES
 
 add_executable(${PROJECT_NAME} ${PROJECT_CPP_SOURCES})
 target_link_libraries(
- CardsOnBattleField
+ BoardGameLib
  sfml-graphics
 )
