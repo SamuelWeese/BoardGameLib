@@ -25,7 +25,7 @@ int main()
                     std::cout << "the right button was pressed" << std::endl;
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-                    aBoard.mouseClick(event.mouseButton.x,event.mouseButton.y);
+                    aBoard.mouseChessClick(event.mouseButton.x,event.mouseButton.y);
                 }
                 break;
             }

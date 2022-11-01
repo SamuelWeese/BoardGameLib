@@ -8,6 +8,7 @@ enum player { black, white, none};
 
 class chess : public board
 {
+    player currentPlayerTurn;
     sf::Texture chessPieces;
     // below should probably be some form of const static for vanilla chess, but these pieces are extendable
     piece wPawn;
@@ -28,41 +29,23 @@ class chess : public board
     //
     bool safetyCheck(int x, int y);
     // functors
-    void pawnMovement(player aColor);
-    void knightMovement(player aColor);
-
-    void rookMovement(player aColor);
-    void bishopMovement(player aColor);
-    void queenMovement(player aColor);
-
-    void kingMovement(player aColor);
+    void pawnMovement();
+    void knightMovement();
+    void rookMovement();
+    void bishopMovement();
+    void queenMovement();
+    void kingMovement();
 
 public:
     explicit chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
     bool setTileHighlight(int x, int y);
     void setMoveHighlight(int x, int y);
     void setAttackHighlight(int x, int y);
+    void mouseChessClick(int a, int b);
+
 
     // virtual overrides
     void readFEN(std::string) override;
 };
 
 #endif // CHESS_H
-/*
- *     sf::Texture whitePawn;
-    chess aBoard(&window);
-    piece aPiece(&whitePawn);
-    aPiece.setSpriteTexture(&whitePawn);
-    for (int x = 0; x < aBoard.gameState.size(); x++)
-    {
-        for (int y = 0; y < aBoard.gameState[x].size(); y++)
-        {
-            aBoard.gameState[x][y].setPiece(aPiece);
-        }
-    }
-    if (!whitePawn.loadFromFile("/tmp/chess.png", sf::IntRect(0, 0, 100, 100))) // arguments for this are
-        //("string name", sf::IntRect(first corner of file (0 for full file), 0 (second corner), size of file, size of file))
-    {
-        exit(1);
-        // error...
-    }*/

@@ -37,7 +37,8 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 
 
     this->setUpInitialBoard();
-    this->readFEN(FEN);
+    std::string aFEN = "rnbqkbnr/pppppppp/8/1nN1r/8/8/PPPPPPPP/RNBQKBNR";
+    this->readFEN(aFEN);
 }
 
 player chess::getPlayer(char aChar)
@@ -78,6 +79,10 @@ void chess::readFEN(std::string aStr)
         if (!safetyCheck(x, y))
         {
             continue;
+        }
+        if (47 < aChar && aChar < 58)
+        {
+            x += (aChar - 49);
         }
         switch (aChar)
         {
@@ -162,6 +167,7 @@ void chess::setMoveHighlight(int x, int y)
         }
     }
 }
+
 void chess::setAttackHighlight(int x, int y)
 {
     player tileOwner = getPlayer(this->selectedTile->getFEN());
@@ -175,7 +181,7 @@ void chess::setAttackHighlight(int x, int y)
     }
 }
 
-void chess::pawnMovement(player aColor)
+void chess::pawnMovement()
 {
     player pawnOwner = getPlayer(this->selectedTile->getFEN());
     int adder = 1;
@@ -206,7 +212,7 @@ void chess::pawnMovement(player aColor)
     }
 }
 
-void chess::knightMovement(player aColor)
+void chess::knightMovement()
 {
     int xPlace, yPlace;
     for (int adderIter = -2; adderIter < 4; adderIter += 2)
@@ -229,7 +235,7 @@ void chess::knightMovement(player aColor)
     }
 }
 
-void chess::rookMovement(player aColor)
+void chess::rookMovement()
 {
     player rookOwner = getPlayer(this->selectedTile->getFEN());\
 
@@ -252,6 +258,14 @@ void chess::rookMovement(player aColor)
             break;
         }
     }
+    for (int i = rookY+1; i < gameState.size(); i++)
+    {
+        if(!safetyCheck(rookX,i)) break;
+        if(setTileHighlight(rookX, i))
+        {
+            break;
+        }
+    }
     for (int i = rookY-1; i >= 0; i--)
     {
         if(!safetyCheck(rookX,i)) break;
@@ -261,14 +275,53 @@ void chess::rookMovement(player aColor)
         }
     }
 }
-void chess::bishopMovement(player aColor){}
-void chess::queenMovement(player aColor)
+void chess::bishopMovement(){}
+void chess::queenMovement()
 {
-    rookMovement(aColor);
-    bishopMovement(aColor);
+    rookMovement();
+    bishopMovement();
 }
 
-void chess::kingMovement(player aColor)
+void chess::kingMovement()
 {
 
-};
+}
+
+void chess::mouseChessClick(int a, int b)
+{
+    clearBoardHighlights();
+    mouseClick(a, b);
+    char aChar = this->selectedTile->getFEN();
+    if (currentPlayerTurn != getPlayer(aChar))
+    {
+        this->selectedTile->setHighlightSelected();
+        return;
+    }
+    switch (aChar)
+    {
+    case 'b':
+    case 'B':
+        break;
+    case 'p':
+    case 'P':
+        pawnMovement();
+        break;
+    case 'n':
+    case 'N':
+        knightMovement();
+        break;
+    case 'q':
+    case 'Q':
+        break;
+    case 'k':
+    case 'K':
+        break;
+    case 'r':
+    case 'R':
+        rookMovement();
+        break;
+    default:
+        this->selectedTile->setHighlightDefault();
+    }
+
+}

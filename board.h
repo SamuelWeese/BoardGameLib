@@ -33,12 +33,13 @@ public:
     void setTileTexture(std::string pathToTexture);
     bool setTileTexture();
     void draw();
-    boardtile* mouseClick(int a, int b);
+
     void clearBoardHighlights();
     std::string generateFEN();
     virtual void readFEN(std::string) {return;} // add default lookup function later
     virtual void initialPosition() {return;}
     virtual void placePiece(char, int, int) {return;}
+    boardtile* mouseClick(int a, int b);
 protected:
     virtual void generateAttackableSquares(boardtile &selectedTile) {return;}
     virtual void moveUnit(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile);
