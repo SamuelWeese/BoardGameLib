@@ -37,7 +37,7 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 
 
     this->setUpInitialBoard();
-    std::string aFEN = "rnbqkbnr/pppppppp/3pnNpPP/3nNP/8/8/PPPPPPPP/RNBQKBNR";
+    std::string aFEN = "rnbqkbnr/pppppppp/3pnNpPP/3nNP/bB3bB/2kK1Qq/PPPPPPPP/RNBQKBNR"; // TODO remove later
     this->readFEN(aFEN);
 }
 
@@ -145,31 +145,36 @@ bool chess::safetyCheck(int x, int y)
 
 bool chess::setTileHighlight(int x, int y)
 {
-    if (!this->gameState[x][y].hasUnit())
+    if (safetyCheck(x, y))
     {
-        gameState[x][y].setHighlightMoveable();
-        return false;
-    }
-    if(getPlayer(this->gameState[x][y].getFEN()) != getPlayer(this->selectedTile->getFEN()))
-    {
-        gameState[x][y].setHighlightAttackable();
-        return true;
+        if (!this->gameState[x][y].hasUnit())
+        {
+            gameState[x][y].setHighlightMoveable();
+            return false;
+        }
+        if(getPlayer(this->gameState[x][y].getFEN()) != getPlayer(this->selectedTile->getFEN()))
+        {
+            gameState[x][y].setHighlightAttackable();
+            return true;
+        }
     }
     return true;
 }
 
-void chess::setMoveHighlight(int x, int y)
+bool chess::setMoveHighlight(int x, int y)
 {
     if (safetyCheck(x,y))
     {
         if (!gameState[x][y].hasUnit())
         {
             gameState[x][y].setHighlightMoveable();
+            return true;
         }
     }
+    return false;
 }
 
-void chess::setAttackHighlight(int x, int y)
+void chess::setAttackHighlight(int x, int y) // not bool because only pawn uses
 {
     if (safetyCheck(x,y))
     {
@@ -193,8 +198,7 @@ void chess::pawnMovement()
     else if (pawnOwner == none) { return;}
     int positionY = adder + pawnY;
     int positionX = pawnX;
-    setMoveHighlight(positionX, positionY);
-
+    bool movable = setMoveHighlight(positionX, positionY);
     // attack squares!
     for (int i = -1; i < 2; i+=2)
     {
@@ -202,6 +206,7 @@ void chess::pawnMovement()
         setAttackHighlight(positionX, positionY);
     }
     // checking next to back row
+    if (!movable) {return;}
     if (pawnOwner == white && gameState[positionX].size() - 2) // signifies not moved
     {
         adder = adder * 2;
@@ -214,7 +219,7 @@ void chess::pawnMovement()
         positionY = adder + pawnY;
         setMoveHighlight(pawnX, positionY);
     }
-}
+} // TODO add queening/piece selections
 
 void chess::knightMovement()
 {
@@ -241,8 +246,6 @@ void chess::knightMovement()
 
 void chess::rookMovement()
 {
-    player rookOwner = getPlayer(this->selectedTile->getFEN());\
-
     int rookX = this->selectedTile->xPos;
     int rookY = this->selectedTile->yPos;
 
@@ -279,16 +282,59 @@ void chess::rookMovement()
         }
     }
 } // FINISHED, DON'T TOUCH
-void chess::bishopMovement(){}
+void chess::bishopMovement()
+{
+    int bishopX = this->selectedTile->xPos;
+    int bishopY = this->selectedTile->yPos;
+    int xTile, yTile;
+
+    for (int i = 1; (i+bishopX) < gameState.size() && (i+bishopY) < gameState[i+bishopX].size(); i++)
+    {
+        xTile = bishopX + i;
+        yTile = bishopY + i;
+        if(!safetyCheck(xTile, yTile)) break;
+        if(setTileHighlight(xTile, yTile))break;
+    }
+    for (int i = 1; (bishopX + i) < gameState.size() && (bishopY - i) >= 0; i++)
+    {
+        xTile = bishopX + i;
+        yTile = bishopY - i;
+        if(!safetyCheck(xTile, yTile)) break;
+        if(setTileHighlight(xTile, yTile))break;
+    }
+    for (int i = 1; (bishopX - i) >= 0 && (i+bishopY) < gameState[bishopX + i].size(); i++)
+    {
+        xTile = bishopX - i;
+        yTile = bishopY + i;
+        if(!safetyCheck(xTile, yTile)) break;
+        if(setTileHighlight(xTile, yTile))break;
+    }
+    for (int i = 1; (bishopX - i) >= 0 && (bishopY - i) >= 0; i++)
+    {
+        xTile = bishopX - i;
+        yTile = bishopY - i;
+        if(!safetyCheck(xTile, yTile)) break;
+        if(setTileHighlight(xTile, yTile))break;
+    }
+} // DONE, needs more testing TODO
 void chess::queenMovement()
 {
     rookMovement();
     bishopMovement();
-}
+} // THEORETICALLY DONE TESTING TODO
 
 void chess::kingMovement()
 {
+    int kingX = this->selectedTile->xPos;
+    int kingY = this->selectedTile->yPos;
+    for (int i = -1; i <= 1; i++)
+    {
+        for (int j = -1; j <= 1; j++)
+        {
 
+            setTileHighlight(kingX + i, kingY + j);
+        }
+    }
 }
 
 void chess::mouseChessClick(int a, int b)
@@ -306,6 +352,7 @@ void chess::mouseChessClick(int a, int b)
     {
     case 'b':
     case 'B':
+        bishopMovement();
         break;
     case 'p':
     case 'P':
@@ -317,9 +364,11 @@ void chess::mouseChessClick(int a, int b)
         break;
     case 'q':
     case 'Q':
+        queenMovement();
         break;
     case 'k':
     case 'K':
+        kingMovement();
         break;
     case 'r':
     case 'R':
