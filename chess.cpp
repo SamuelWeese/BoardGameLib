@@ -37,7 +37,7 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 
 
     this->setUpInitialBoard();
-    std::string aFEN = "rnbqkbnr/pppppppp/8/1nN1r/8/8/PPPPPPPP/RNBQKBNR";
+    std::string aFEN = "rnbqkbnr/pppppppp/3pnNpPP/3nNP/8/8/PPPPPPPP/RNBQKBNR";
     this->readFEN(aFEN);
 }
 
@@ -52,6 +52,7 @@ player chess::getPlayer(char aChar)
     case 'k':
     case 'p':
         return black;
+
     case 'P':
     case 'R':
     case 'N':
@@ -170,10 +171,11 @@ void chess::setMoveHighlight(int x, int y)
 
 void chess::setAttackHighlight(int x, int y)
 {
-    player tileOwner = getPlayer(this->selectedTile->getFEN());
-    if (tileOwner == none) return;
     if (safetyCheck(x,y))
     {
+        player tileOwner = getPlayer(this->selectedTile->getFEN());
+        player attackedTileOwner = getPlayer(gameState[x][y].getFEN());
+        if (tileOwner == none || attackedTileOwner == none) return;
         if (tileOwner != getPlayer(gameState[x][y].getFEN()))
         {
             gameState[x][y].setHighlightAttackable();
@@ -187,37 +189,39 @@ void chess::pawnMovement()
     int adder = 1;
     int pawnX = this->selectedTile->xPos;
     int pawnY = this->selectedTile->yPos;
-    if (pawnOwner == black){ adder *= 1;}
+    if (pawnOwner == white){ adder *= -1;}
     else if (pawnOwner == none) { return;}
     int positionY = adder + pawnY;
     int positionX = pawnX;
     setMoveHighlight(positionX, positionY);
 
-    // checking next to back row
-    if (pawnOwner == white && pawnY == 1) // signifies not moved
-    {
-        adder = adder * 2;
-        setMoveHighlight(positionX, positionY);
-    }
-    if (pawnOwner == black && pawnY == gameState[positionX].size() - 2) // signifies not moved
-    {
-        adder = adder * 2;
-        setMoveHighlight(positionX, positionY);
-    }
     // attack squares!
     for (int i = -1; i < 2; i+=2)
     {
-        positionX = adder + i;
+        positionX = pawnX + i;
         setAttackHighlight(positionX, positionY);
+    }
+    // checking next to back row
+    if (pawnOwner == white && gameState[positionX].size() - 2) // signifies not moved
+    {
+        adder = adder * 2;
+        positionY = adder + pawnY;
+        setMoveHighlight(pawnX, positionY);
+    }
+    else if (pawnOwner == black && pawnY == 1) // signifies not moved
+    {
+        adder = adder * 2;
+        positionY = adder + pawnY;
+        setMoveHighlight(pawnX, positionY);
     }
 }
 
 void chess::knightMovement()
 {
     int xPlace, yPlace;
-    for (int adderIter = -2; adderIter < 4; adderIter += 2)
+    for (int adderIter = -2; adderIter < 4; adderIter += 4)
     {
-        for (int singleIter = -1; singleIter < 2; singleIter++)
+        for (int singleIter = -1; singleIter < 2; singleIter += 2)
         {
             xPlace = this->selectedTile->xPos + adderIter;
             yPlace = this->selectedTile->yPos + singleIter;
@@ -233,7 +237,7 @@ void chess::knightMovement()
             }
         }
     }
-}
+}// FINISHED DON'T TOUCH
 
 void chess::rookMovement()
 {
@@ -274,7 +278,7 @@ void chess::rookMovement()
             break;
         }
     }
-}
+} // FINISHED, DON'T TOUCH
 void chess::bishopMovement(){}
 void chess::queenMovement()
 {
@@ -292,11 +296,12 @@ void chess::mouseChessClick(int a, int b)
     clearBoardHighlights();
     mouseClick(a, b);
     char aChar = this->selectedTile->getFEN();
+    /* re add for turns
     if (currentPlayerTurn != getPlayer(aChar))
     {
         this->selectedTile->setHighlightSelected();
         return;
-    }
+    }*/
     switch (aChar)
     {
     case 'b':
