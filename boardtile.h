@@ -2,14 +2,18 @@
 #define BOARDTILE_H
 
 #include "piece.h"
+#include <vector>
 
 class boardtile
 {
     piece aPiece;
 public:
+
     sf::Sprite tileSprite;
     int xPos;
     int yPos;
+    std::vector<bool> flags; // added for utility this can provide, especially with highlighting
+    // this is probably a poor design choice, but it is the fast/extendable one
     boardtile(int x , int y);
     ~boardtile();
     bool hasUnit();
