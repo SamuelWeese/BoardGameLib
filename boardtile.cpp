@@ -25,6 +25,7 @@ void boardtile::setPiece(piece aPiece)
 {
     this->aPiece = aPiece;
     this->positionChild();
+    this->scalePiece();
 }
 void boardtile::clearTile()
 {
@@ -60,6 +61,30 @@ void boardtile::positionChild()
 void boardtile::positionChild(int x, int y)
 {
     this->aPiece.tileSprite.setPosition(x, y);
+}
+
+void boardtile::scalePiece()
+{
+    if (this->aPiece.tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
+
+    int tileLength = this->tileSprite.getTexture()->getSize().x * this->tileSprite.getScale().x;
+    if (!tileLength) tileLength = 1;
+
+    int tileHeight = this->tileSprite.getTexture()->getSize().y * this->tileSprite.getScale().y;
+    if (!tileHeight) tileHeight = 1;
+
+    int spriteTextureLength = this->aPiece.tileSprite.getTexture()->getSize().x;
+    if (!spriteTextureLength) spriteTextureLength = 1;
+
+    int spriteTextureHeight = this->aPiece.tileSprite.getTexture()->getSize().y;
+    if (!spriteTextureHeight) spriteTextureHeight = 1;
+
+    float spriteScaleLength = 1.f / ((float)spriteTextureLength / (float)tileLength);
+
+    float spriteScaleHeight = 1.f / ((float)spriteTextureHeight / (float)tileHeight);
+
+    this->aPiece.tileSprite.setScale(spriteScaleLength, spriteScaleHeight);
+
 }
 
 void boardtile::draw(sf::RenderWindow *aWindow)

@@ -23,6 +23,7 @@ public:
     char getFEN(){ return this->aPiece.getFEN();};
     piece getPiece() {return this->aPiece;}
     void positionChild(); void positionChild(int x, int y);
+    void scalePiece();
     void draw(sf::RenderWindow *aWindow); // draw is identical to piece.draw, not sharing class due to file confusion/readability
 };
 

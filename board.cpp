@@ -16,6 +16,7 @@ void board::setUpInitialBoard()
     auto windowDimension = aWindow->getSize();
     float scaleX, scaleY; // windowSize - padding * 2 is to ensure tile only in the "play space"
     // divided by number of tile, then multiplied by th
+    // TODO rewrite scale to enforce uniform sizing not dependant on image size
     scaleX = (windowDimension.x - (padding*2))/(float)this->length*( this->tileScaleFloat / (float) windowDimension.x);
     scaleY = (windowDimension.y - (padding*2))/(float)this->height*( this->tileScaleFloat / (float) windowDimension.y);
 

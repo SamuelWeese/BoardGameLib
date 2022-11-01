@@ -17,18 +17,18 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     }
 
     // setting up piece literals
-    wPawn = piece('P', &chessPieces, sf::IntRect(10,10,100,100));
-    wRook = piece('R', &chessPieces, sf::IntRect(10,10,100,100));
-    wKnight = piece('N', &chessPieces, sf::IntRect(10,10,100,100));
-    wBishop = piece('B', &chessPieces, sf::IntRect(10,10,100,100));
-    wQueen = piece('Q', &chessPieces, sf::IntRect(10,10,100,100));
-    wKing = piece('K', &chessPieces, sf::IntRect(10,10,100,100));
-    bPawn = piece('p', &chessPieces, sf::IntRect(10,10,100,100));
-    bRook = piece('r', &chessPieces, sf::IntRect(10,10,100,100));
-    bKnight = piece('n', &chessPieces, sf::IntRect(10,10,100,100));
-    bBishop = piece('b', &chessPieces, sf::IntRect(10,10,100,100));
-    bQueen = piece('q', &chessPieces, sf::IntRect(10,10,100,100));
-    bKing = piece('k', &chessPieces, sf::IntRect(10,10,100,100));
+    wPawn = piece('P', &chessPieces, sf::IntRect(0,0,1024,1024));
+    wRook = piece('R', &chessPieces, sf::IntRect(0,0,1024,1024));
+    wKnight = piece('N', &chessPieces, sf::IntRect(0,0,1024,1024));
+    wBishop = piece('B', &chessPieces, sf::IntRect(0,0,1024,1024));
+    wQueen = piece('Q', &chessPieces, sf::IntRect(0,0,1024,1024));
+    wKing = piece('K', &chessPieces, sf::IntRect(0,0,1024,1024));
+    bPawn = piece('p', &chessPieces, sf::IntRect(0,0,1024,1024));
+    bRook = piece('r', &chessPieces, sf::IntRect(0,0,1024,1024));
+    bKnight = piece('n', &chessPieces, sf::IntRect(0,0,1024,1024));
+    bBishop = piece('b', &chessPieces, sf::IntRect(0,0,1024,1024));
+    bQueen = piece('q', &chessPieces, sf::IntRect(0,0,1024,1024));
+    bKing = piece('k', &chessPieces, sf::IntRect(0,0,1024,1024));
 
     this->setUpInitialBoard();
     this->readFEN(FEN);
