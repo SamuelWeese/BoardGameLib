@@ -15,7 +15,16 @@ class piece
 
 protected:
     char fenChar;
+    // TODO replace below
+    // below exists because getting the texture of a sprite returns the
+    // ENTIRE texture, not just the subsection the sprite has.
+    int length;
+    int height;
 public:
+
+    //TODO remove below function
+    int getLength() { return length;}
+    int getHeight() { return height;}
     sf::Sprite tileSprite;
 
     piece(); // empty tile piece

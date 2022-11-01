@@ -46,4 +46,6 @@ void piece::setSpriteTextureRect(sf::Texture *aTexture, sf::IntRect aRect)
 {
     this->tileSprite.setTexture(*aTexture);
     this->tileSprite.setTextureRect(aRect);
+    this->length = aRect.width;
+    this->height = aRect.height;
 }

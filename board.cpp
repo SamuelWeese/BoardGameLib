@@ -83,6 +83,9 @@ void board::draw()
         }
     }
 }
+
+#include <iostream>
+
 boardtile *board::mouseClick(int xPos, int yPos)
 {
     // not sure if I want this to select exact square or just closest
@@ -101,6 +104,7 @@ boardtile *board::mouseClick(int xPos, int yPos)
             &&  (xPos - tilePosX) > 0          && (yPos-tilePosY) > 0)
             {
                 this->selectedTile = &gameState[x][y];
+                std::cout << (int)this->selectedTile->getFEN() << " or " << this->selectedTile->getFEN() << std::endl;
                 gameState[x][y].setHighlightSelected(); // TODO remove final version, used for testing
 
                 return &this->gameState[x][y]; // currently all I want the board to do is highlight and select a tile

@@ -40,6 +40,8 @@ class chess : public board
 
 public:
     explicit chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+    void setMoveHighlight(int x, int y);
+    void setAttackHighlight(int x, int y);
 
     // virtual overrides
     void readFEN(std::string) override;

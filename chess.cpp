@@ -6,7 +6,7 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     this->height = CHESS_LENGTH;
 
     // setting up textures
-    if (!chessPieces.loadFromFile("/tmp/tiletexture.png"))
+    if (!chessPieces.loadFromFile("/tmp/chessPieces.png"))
     {
          throw std::runtime_error("Bad piece sprite texture path.");
     }
@@ -17,17 +17,17 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     }
 
     // setting up piece literals
-    wPawn = piece('P', &chessPieces, sf::IntRect(0,0,1024,1024));
+    wPawn = piece('P', &chessPieces, sf::IntRect(0,0,10,10));
     wRook = piece('R', &chessPieces, sf::IntRect(0,0,1024,1024));
     wKnight = piece('N', &chessPieces, sf::IntRect(0,0,1024,1024));
     wBishop = piece('B', &chessPieces, sf::IntRect(0,0,1024,1024));
-    wQueen = piece('Q', &chessPieces, sf::IntRect(0,0,1024,1024));
-    wKing = piece('K', &chessPieces, sf::IntRect(0,0,1024,1024));
-    bPawn = piece('p', &chessPieces, sf::IntRect(0,0,1024,1024));
+    wQueen = piece('Q', &chessPieces, sf::IntRect(217,126,125,125));
+    wKing = piece('K', &chessPieces, sf::IntRect(25,25,125,125));
+    bPawn = piece('p', &chessPieces, sf::IntRect(20,24,100,100));
     bRook = piece('r', &chessPieces, sf::IntRect(0,0,1024,1024));
     bKnight = piece('n', &chessPieces, sf::IntRect(0,0,1024,1024));
     bBishop = piece('b', &chessPieces, sf::IntRect(0,0,1024,1024));
-    bQueen = piece('q', &chessPieces, sf::IntRect(0,0,1024,1024));
+    bQueen = piece('q', &chessPieces, sf::IntRect(217,126,125,125));
     bKing = piece('k', &chessPieces, sf::IntRect(0,0,1024,1024));
 
     this->setUpInitialBoard();
@@ -59,11 +59,10 @@ player chess::getPlayer(char aChar)
 
 void chess::readFEN(std::string aStr)
 {
-    int x = -1;
+    int x = 0;
     int y = 0;
     for (auto aChar : aStr)
     {
-        x++;
         if (aChar == '/')
         {
             x = 0;
@@ -92,7 +91,7 @@ void chess::readFEN(std::string aStr)
             gameState[x][y].setPiece(bKing);
             break;
         case 'p':
-            gameState[x][y].setPiece(bPawn);
+            gameState[x][y].setPiece(wPawn);
             break;
         case 'P':
             gameState[x][y].setPiece(bPawn);
@@ -114,6 +113,7 @@ void chess::readFEN(std::string aStr)
             break;
             // pass
         }
+        x++;
     }
 }
 
@@ -144,10 +144,40 @@ void chess::setTileHighlight(int x, int y)
     }
 }
 
+void chess::setMoveHighlight(int x, int y){} // TODO
+void chess::setAttackHighlight(int x, int y){} // TODO
+
 void chess::pawnMovement(player aColor)
 {
+    player pawnOwner = getPlayer(this->selectedTile->getFEN());
+    int adder = 1;
+    int pawnX = this->selectedTile->xPos;
+    int pawnY = this->selectedTile->yPos;
+    if (pawnOwner == black){ adder *= 1;}
+    else if (pawnOwner == none) { return;}
+    int positionY = adder + pawnY;
+    int positionX = pawnX;
+    setMoveHighlight(positionX, positionY);
 
+    // checking next to back row
+    if (pawnOwner == white && pawnY == 1) // signifies not moved
+    {
+        adder = adder * 2;
+        setMoveHighlight(positionX, positionY);
+    }
+    if (pawnOwner == black && pawnY == gameState[positionX].size() - 2) // signifies not moved
+    {
+        adder = adder * 2;
+        setMoveHighlight(positionX, positionY);
+    }
+    // attack squares!
+    for (int i = -1; i < 2; i+=2)
+    {
+        positionX = adder + i;
+        setAttackHighlight(positionX, positionY);
+    }
 }
+
 void chess::knightMovement(player aColor)
 {
     int xPlace, yPlace;
@@ -169,7 +199,7 @@ void chess::knightMovement(player aColor)
             }
         }
     }
-    }
+}
 
 void chess::rookMovement(player aColor){}
 void chess::bishopMovement(player aColor){}
@@ -177,10 +207,12 @@ void chess::queenMovement(player aColor)
 {
     rookMovement(aColor);
     bishopMovement(aColor);
-
 }
 
-void chess::kingMovement(player aColor){};
+void chess::kingMovement(player aColor)
+{
+
+};
 /*
 void chess::placePiece(char aChar, int xPos, int yPos)
 {

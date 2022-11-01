@@ -64,6 +64,8 @@ void boardtile::positionChild(int x, int y)
     this->aPiece.tileSprite.setPosition(x, y);
 }
 
+#include <iostream>
+
 void boardtile::scalePiece()
 {
     if (this->aPiece.tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
@@ -74,16 +76,16 @@ void boardtile::scalePiece()
     int tileHeight = this->tileSprite.getTexture()->getSize().y * this->tileSprite.getScale().y;
     if (!tileHeight) tileHeight = 1;
 
-    int spriteTextureLength = this->aPiece.tileSprite.getTexture()->getSize().x;
+    int spriteTextureLength = this->aPiece.getLength();
     if (!spriteTextureLength) spriteTextureLength = 1;
 
-    int spriteTextureHeight = this->aPiece.tileSprite.getTexture()->getSize().y;
+    int spriteTextureHeight = this->aPiece.getHeight();
     if (!spriteTextureHeight) spriteTextureHeight = 1;
 
     float spriteScaleLength = 1.f / ((float)spriteTextureLength / (float)tileLength);
-
+    std::cout << spriteScaleLength << std::endl;
     float spriteScaleHeight = 1.f / ((float)spriteTextureHeight / (float)tileHeight);
-
+    std::cout << spriteScaleHeight << std::endl;
     this->aPiece.tileSprite.setScale(spriteScaleLength, spriteScaleHeight);
 
 }
