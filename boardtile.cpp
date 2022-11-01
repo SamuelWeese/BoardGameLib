@@ -53,6 +53,7 @@ void boardtile::setHighlightMoveable()
     this->tileSprite.setColor(sf::Color(0,0,255,128));
 }
 
+
 void boardtile::positionChild()
 {
     auto coordinates = this->tileSprite.getPosition();

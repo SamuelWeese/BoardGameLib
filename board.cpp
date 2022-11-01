@@ -9,6 +9,7 @@ board::board( sf::RenderWindow *passWindow, std::string pathToTexture, int board
     this->height = boardHeight;
     this->length = boardLength;
     this->padding = padding; // in px
+    this->selectedTile = nullptr;
 }
 
 void board::setUpInitialBoard()
@@ -101,6 +102,7 @@ boardtile *board::mouseClick(int xPos, int yPos)
             {
                 this->selectedTile = &gameState[x][y];
                 gameState[x][y].setHighlightSelected(); // TODO remove final version, used for testing
+
                 return &this->gameState[x][y]; // currently all I want the board to do is highlight and select a tile
                 // returning allows users to do more faster, and to change board behavior if a tile is not clicked
             }
