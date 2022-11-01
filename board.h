@@ -42,7 +42,7 @@ public:
     boardtile* mouseClick(int a, int b);
 protected:
     virtual void generateAttackableSquares(boardtile &selectedTile) {return;}
-    virtual void moveUnit(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile);
+    virtual void movePiece(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile);
 
 };
 

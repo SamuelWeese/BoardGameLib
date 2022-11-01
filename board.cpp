@@ -149,7 +149,7 @@ std::string board::generateFEN()
     return retStr;
 }
 
-void board::moveUnit(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile)
+void board::movePiece(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile)
 {
     this->gameState[xFinalTile][yFinalTile].setPiece(gameState[xStartTile][yStartTile].getPiece());
     gameState[xStartTile][yStartTile].clearTile();

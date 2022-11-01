@@ -4,7 +4,7 @@
 
 #define CHESS_LENGTH 8
 
-enum player { black, white, none};
+enum player { black, white, none}; // none should always be last
 
 class chess : public board
 {
@@ -25,6 +25,7 @@ class chess : public board
     piece bKing;
 
     player getPlayer(char aChar);
+    void iteratePlayer();
 
     //
     bool safetyCheck(int x, int y);
@@ -35,6 +36,8 @@ class chess : public board
     void bishopMovement();
     void queenMovement();
     void kingMovement();
+    bool setHighlightFlag(int x, int y, bool flagStatus = true);
+    void clearBoardHighlightFlag();
 
 public:
     explicit chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
@@ -42,6 +45,7 @@ public:
     bool setMoveHighlight(int x, int y);
     void setAttackHighlight(int x, int y);
     void mouseChessClick(int a, int b);
+
 
 
     // virtual overrides

@@ -4,6 +4,7 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 {
     this->length = CHESS_LENGTH;
     this->height = CHESS_LENGTH;
+    this->currentPlayerTurn = static_cast<player>(0);
 
     // setting up textures
     if (!chessPieces.loadFromFile("/tmp/chessPieces.png"))
@@ -17,8 +18,8 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     }
 
     // setting up piece literals
-    wKing = piece('K', &chessPieces, sf::IntRect(25,25,100,100));
-    bKing = piece('k', &chessPieces, sf::IntRect(10,180,100,100));
+    wKing = piece('K', &chessPieces, sf::IntRect(15,25,100,100));
+    bKing = piece('k', &chessPieces, sf::IntRect(15,180,100,100));
 
     wPawn = piece('P', &chessPieces, sf::IntRect(1000,25,100,100));
     bPawn = piece('p', &chessPieces, sf::IntRect(1000,180,100,100));
@@ -37,6 +38,18 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 
 
     this->setUpInitialBoard();
+    for (int x = 0; x < this->length; x++)
+    {
+        for (int y = 0; y < this->height; y++)
+        {
+            if (gameState[x][y].flags.size() != 0)
+            {
+                throw std::runtime_error("Flags already exist! Cannot force unhighlighted flag!");
+            }
+            bool isHighlighted = false;
+            gameState[x][y].flags.push_back(isHighlighted);
+        }
+    }
     std::string aFEN = "rnbqkbnr/pppppppp/3pnNpPP/3nNP/bB3bB/2kK1Qq/PPPPPPPP/RNBQKBNR"; // TODO remove later
     this->readFEN(aFEN);
 }
@@ -62,6 +75,15 @@ player chess::getPlayer(char aChar)
         return white;
     default:
         return none;
+    }
+}
+
+void chess::iteratePlayer()
+{
+    this->currentPlayerTurn = static_cast<player>(static_cast<int>(this->currentPlayerTurn) + 1);
+    if (this->currentPlayerTurn == none)
+    {
+        this->currentPlayerTurn = static_cast<player>(0);
     }
 }
 
@@ -150,11 +172,13 @@ bool chess::setTileHighlight(int x, int y)
         if (!this->gameState[x][y].hasUnit())
         {
             gameState[x][y].setHighlightMoveable();
+            setHighlightFlag(x, y);
             return false;
         }
         if(getPlayer(this->gameState[x][y].getFEN()) != getPlayer(this->selectedTile->getFEN()))
         {
             gameState[x][y].setHighlightAttackable();
+            setHighlightFlag(x, y);
             return true;
         }
     }
@@ -168,6 +192,7 @@ bool chess::setMoveHighlight(int x, int y)
         if (!gameState[x][y].hasUnit())
         {
             gameState[x][y].setHighlightMoveable();
+            setHighlightFlag(x, y);
             return true;
         }
     }
@@ -184,6 +209,32 @@ void chess::setAttackHighlight(int x, int y) // not bool because only pawn uses
         if (tileOwner != getPlayer(gameState[x][y].getFEN()))
         {
             gameState[x][y].setHighlightAttackable();
+            setHighlightFlag(x, y);
+        }
+    }
+}
+
+bool chess::setHighlightFlag(int x, int y, bool flagStatus)
+{
+    if (safetyCheck(x, y)) // this may seem redundant, but check is optimized out with 1 and higher
+    {
+        if (gameState[x][y].flags.size() >= 1)
+        {
+            gameState[x][y].flags[0] = flagStatus;
+            return true;
+        }
+    }
+    throw std::runtime_error("Highlight flag unable to set!");
+    return false;
+}
+
+void chess::clearBoardHighlightFlag()
+{
+    for (int x = 0; x < this->length; x++)
+    {
+        for (int y = 0; y < this->height; y++)
+        {
+            setHighlightFlag(x, y, false);
         }
     }
 }
@@ -321,7 +372,7 @@ void chess::queenMovement()
 {
     rookMovement();
     bishopMovement();
-} // THEORETICALLY DONE TESTING TODO
+}
 
 void chess::kingMovement()
 {
@@ -339,15 +390,34 @@ void chess::kingMovement()
 
 void chess::mouseChessClick(int a, int b)
 {
-    clearBoardHighlights();
+    // design wise not sure how much should be incorporated to board
+    // I should probably redesign this later TODO
+    int oldX, oldY;
+    if (this->selectedTile != nullptr)
+    {
+        oldX = this->selectedTile->xPos;
+        oldY = this->selectedTile->yPos;
+    }
     mouseClick(a, b);
+    if (this->selectedTile != nullptr)
+    {
+        if (oldX == this->selectedTile->xPos && oldY == this->selectedTile->yPos) return;
+    }
+    clearBoardHighlights();
+    if (this->selectedTile->flags[0] == true && this->selectedTile != nullptr)
+    {
+        movePiece(oldX, oldY, this->selectedTile->xPos, this->selectedTile->yPos);
+        this->iteratePlayer();
+        this->clearBoardHighlightFlag();
+        this->selectedTile = nullptr;
+        return;
+    }
     char aChar = this->selectedTile->getFEN();
-    /* re add for turns
     if (currentPlayerTurn != getPlayer(aChar))
     {
         this->selectedTile->setHighlightSelected();
         return;
-    }*/
+    }
     switch (aChar)
     {
     case 'b':
@@ -377,5 +447,6 @@ void chess::mouseChessClick(int a, int b)
     default:
         this->selectedTile->setHighlightDefault();
     }
+
 
 }
