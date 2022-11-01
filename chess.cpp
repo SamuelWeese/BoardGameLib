@@ -413,6 +413,8 @@ void chess::mouseChessClick(int a, int b)
         return;
     }
     char aChar = this->selectedTile->getFEN();
+    this->clearBoardHighlightFlag();
+    this->selectedTile->setHighlightSelected();
     if (currentPlayerTurn != getPlayer(aChar))
     {
         this->selectedTile->setHighlightSelected();
