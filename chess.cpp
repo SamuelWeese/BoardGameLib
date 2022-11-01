@@ -144,7 +144,16 @@ void chess::setTileHighlight(int x, int y)
     }
 }
 
-void chess::setMoveHighlight(int x, int y){} // TODO
+void chess::setMoveHighlight(int x, int y)
+{
+    if (safetyCheck(x,y))
+    {
+        if (!gameState[x][y].hasUnit())
+        {
+            gameState[x][y].setHighlightMoveable();
+        }
+    }
+}
 void chess::setAttackHighlight(int x, int y){} // TODO
 
 void chess::pawnMovement(player aColor)
