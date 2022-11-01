@@ -17,18 +17,24 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     }
 
     // setting up piece literals
-    wPawn = piece('P', &chessPieces, sf::IntRect(0,0,10,10));
-    wRook = piece('R', &chessPieces, sf::IntRect(0,0,1024,1024));
-    wKnight = piece('N', &chessPieces, sf::IntRect(0,0,1024,1024));
-    wBishop = piece('B', &chessPieces, sf::IntRect(0,0,1024,1024));
-    wQueen = piece('Q', &chessPieces, sf::IntRect(217,126,125,125));
-    wKing = piece('K', &chessPieces, sf::IntRect(25,25,125,125));
-    bPawn = piece('p', &chessPieces, sf::IntRect(20,24,100,100));
-    bRook = piece('r', &chessPieces, sf::IntRect(0,0,1024,1024));
-    bKnight = piece('n', &chessPieces, sf::IntRect(0,0,1024,1024));
-    bBishop = piece('b', &chessPieces, sf::IntRect(0,0,1024,1024));
-    bQueen = piece('q', &chessPieces, sf::IntRect(217,126,125,125));
-    bKing = piece('k', &chessPieces, sf::IntRect(0,0,1024,1024));
+    wKing = piece('K', &chessPieces, sf::IntRect(25,25,100,100));
+    bKing = piece('k', &chessPieces, sf::IntRect(10,180,100,100));
+
+    wPawn = piece('P', &chessPieces, sf::IntRect(1000,25,100,100));
+    bPawn = piece('p', &chessPieces, sf::IntRect(1000,180,100,100));
+
+    wRook = piece('R', &chessPieces, sf::IntRect(415,25,100,100));
+    bRook = piece('r', &chessPieces, sf::IntRect(415,185,100,100));
+
+    wKnight = piece('N', &chessPieces, sf::IntRect(815,25,100,100));
+    bKnight = piece('n', &chessPieces, sf::IntRect(815,180,100,100));
+
+    wBishop = piece('B', &chessPieces, sf::IntRect(615,25,100,100));
+    bBishop = piece('b', &chessPieces, sf::IntRect(615,180,100,100));
+
+    wQueen = piece('Q', &chessPieces, sf::IntRect(215,25,100,100));
+    bQueen = piece('q', &chessPieces, sf::IntRect(215,185,100,100));
+
 
     this->setUpInitialBoard();
     this->readFEN(FEN);
@@ -91,27 +97,28 @@ void chess::readFEN(std::string aStr)
             gameState[x][y].setPiece(bKing);
             break;
         case 'p':
-            gameState[x][y].setPiece(wPawn);
+            gameState[x][y].setPiece(bPawn);
             break;
         case 'P':
-            gameState[x][y].setPiece(bPawn);
+            gameState[x][y].setPiece(wPawn);
             break;
         case 'R':
-            gameState[x][y].setPiece(bPawn);
+            gameState[x][y].setPiece(wRook);
             break;
         case 'N':
-            gameState[x][y].setPiece(bPawn);
+            gameState[x][y].setPiece(wKnight);
             break;
         case 'B':
-            gameState[x][y].setPiece(bPawn);
+            gameState[x][y].setPiece(wBishop);
             break;
         case 'Q':
-            gameState[x][y].setPiece(bPawn);
+            gameState[x][y].setPiece(wQueen);
             break;
         case 'K':
-            gameState[x][y].setPiece(bPawn);
+            gameState[x][y].setPiece(wKing);
             break;
-            // pass
+            // pass default
+            // probably should add some way to fix broken FEN, though this does that technically
         }
         x++;
     }
@@ -130,18 +137,19 @@ bool chess::safetyCheck(int x, int y)
     return true;
 }
 
-void chess::setTileHighlight(int x, int y)
+bool chess::setTileHighlight(int x, int y)
 {
     if (!this->gameState[x][y].hasUnit())
     {
         gameState[x][y].setHighlightMoveable();
-        return;
+        return false;
     }
     if(getPlayer(this->gameState[x][y].getFEN()) != getPlayer(this->selectedTile->getFEN()))
     {
         gameState[x][y].setHighlightAttackable();
-        return;
+        return true;
     }
+    return true;
 }
 
 void chess::setMoveHighlight(int x, int y)
@@ -221,7 +229,38 @@ void chess::knightMovement(player aColor)
     }
 }
 
-void chess::rookMovement(player aColor){}
+void chess::rookMovement(player aColor)
+{
+    player rookOwner = getPlayer(this->selectedTile->getFEN());\
+
+    int rookX = this->selectedTile->xPos;
+    int rookY = this->selectedTile->yPos;
+
+    for (int i = rookX+1; i < gameState.size(); i++)
+    {
+        if(!safetyCheck(i,rookY)) break;
+        if(setTileHighlight(i, rookY))
+        {
+            break;
+        }
+    }
+    for (int i = rookX-1; i >= 0; i--)
+    {
+        if(!safetyCheck(i,rookY)) break;
+        if(setTileHighlight(i, rookY))
+        {
+            break;
+        }
+    }
+    for (int i = rookY-1; i >= 0; i--)
+    {
+        if(!safetyCheck(rookX,i)) break;
+        if(setTileHighlight(rookX, i))
+        {
+            break;
+        }
+    }
+}
 void chess::bishopMovement(player aColor){}
 void chess::queenMovement(player aColor)
 {
@@ -233,8 +272,3 @@ void chess::kingMovement(player aColor)
 {
 
 };
-/*
-void chess::placePiece(char aChar, int xPos, int yPos)
-{
-    this->gameState[xPos][yPos]
-}*/

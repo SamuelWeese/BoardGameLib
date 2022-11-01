@@ -27,7 +27,6 @@ class chess : public board
 
     //
     bool safetyCheck(int x, int y);
-    void setTileHighlight(int x, int y);
     // functors
     void pawnMovement(player aColor);
     void knightMovement(player aColor);
@@ -40,6 +39,7 @@ class chess : public board
 
 public:
     explicit chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+    bool setTileHighlight(int x, int y);
     void setMoveHighlight(int x, int y);
     void setAttackHighlight(int x, int y);
 
