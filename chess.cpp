@@ -154,7 +154,18 @@ void chess::setMoveHighlight(int x, int y)
         }
     }
 }
-void chess::setAttackHighlight(int x, int y){} // TODO
+void chess::setAttackHighlight(int x, int y)
+{
+    player tileOwner = getPlayer(this->selectedTile->getFEN());
+    if (tileOwner == none) return;
+    if (safetyCheck(x,y))
+    {
+        if (tileOwner != getPlayer(gameState[x][y].getFEN()))
+        {
+            gameState[x][y].setHighlightAttackable();
+        }
+    }
+}
 
 void chess::pawnMovement(player aColor)
 {
