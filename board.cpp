@@ -15,11 +15,10 @@ board::board( sf::RenderWindow *passWindow, std::string pathToTexture, int board
 void board::setUpInitialBoard()
 {
     auto windowDimension = aWindow->getSize();
-    float scaleX, scaleY; // windowSize - padding * 2 is to ensure tile only in the "play space"
+    int scaleX, scaleY; // windowSize - padding * 2 is to ensure tile only in the "play space"
     // divided by number of tile, then multiplied by th
-    // TODO rewrite scale to enforce uniform sizing not dependant on image size
-    scaleX = (windowDimension.x - (padding*2))/(float)this->length*( this->tileScaleFloat / (float) windowDimension.x);
-    scaleY = (windowDimension.y - (padding*2))/(float)this->height*( this->tileScaleFloat / (float) windowDimension.y);
+    scaleX = (windowDimension.x - (padding*2))/(float)this->length - padding/10;
+    scaleY = (windowDimension.y - (padding*2))/(float)this->height - padding/10;
 
     for (int x = 0; x < this->length; x++)
     {
@@ -34,7 +33,7 @@ void board::setUpInitialBoard()
 
             gameState[x][y].tileSprite.setTexture(this->tileTexture);
             gameState[x][y].tileSprite.setPosition(positionX, positionY);
-            gameState[x][y].tileSprite.setScale(scaleX, scaleY);
+            gameState[x][y].scaleTile(scaleX, scaleY);
         }
     }
 }

@@ -9,13 +9,12 @@
 #define BOARD_LENGTH 8
 #define BOARD_HEIGHT 8
 #define BOARD_PADDING 10
-#define TILE_SCALING 0.95f
 
 class board
 {
 protected:
     sf::Texture tileTexture;
-    const float tileScaleFloat = TILE_SCALING;
+    const float tileScaleFloat = 0.99f;
     int padding; // in px
     boardtile *selectedTile;
     int windowLength;

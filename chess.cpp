@@ -41,6 +41,7 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 
     this->setUpInitialBoard();
 
+    auto windowSize = 0;
     for (int x = 0; x < this->length; x++)
     {
         for (int y = 0; y < this->height; y++)
@@ -49,11 +50,13 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
             // possible solution is allowing functors for default set up?
             if (x%2 + y%2 == 1)
             {
-                gameState[x][y].tileSprite.setTextureRect(darkSquareRect);
+                //gameState[x][y].tileSprite.setTextureRect(darkSquareRect);
+                //gameState[x][y].tileSprite.scale(1, 1);
             }
             else
             {
-                gameState[x][y].tileSprite.setTextureRect(lightSquareRect);
+                //gameState[x][y].tileSprite.setTextureRect(lightSquareRect);
+
             }
             if (gameState[x][y].flags.size() != 0)
             {
