@@ -5,6 +5,8 @@ boardtile::boardtile(int x, int y)//, sf::Texture tileTexture)
     this->xPos = x;
     this->yPos = y;
     this->aPiece = piece();
+    this->textureHeight = -1;
+    this->textureLength = -1;
 }
 
 boardtile::~boardtile()
@@ -21,6 +23,13 @@ bool boardtile::hasUnit()
     return true;
 }
 
+void boardtile::setTextureByRect(sf::IntRect aRect)
+{
+    tileSprite.setTextureRect(aRect);
+    this->textureLength = aRect.width;
+    this->textureLength = aRect.height;
+    this->scalePiece();
+}
 void boardtile::setPiece(piece aPiece)
 {
     this->aPiece = aPiece;
@@ -67,7 +76,7 @@ void boardtile::positionChild(int x, int y)
 #include <iostream>
 
 void boardtile::scaleTile(int x, int y)//
-{//TODO
+{
     if (this->tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
 
     int tileLength = this->tileSprite.getTexture()->getSize().x * this->tileSprite.getScale().x;
@@ -87,11 +96,21 @@ void boardtile::scalePiece()
 {
     if (this->aPiece.tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
 
-    int tileLength = this->tileSprite.getTexture()->getSize().x * this->tileSprite.getScale().x;
-    if (!tileLength) tileLength = 1;
+    int tileLength, tileHeight;
+    if (textureLength > 0 && textureHeight > 0) // redesign this TODO
+    {
+        tileLength = this->textureLength * this->tileSprite.getScale().x;
+        if (!tileLength) tileLength = 1;
 
-    int tileHeight = this->tileSprite.getTexture()->getSize().y * this->tileSprite.getScale().y;
-    if (!tileHeight) tileHeight = 1;
+        tileHeight = this->textureHeight * this->tileSprite.getScale().y;
+        if (!tileHeight) tileHeight = 1;
+    } else {
+        tileLength = this->tileSprite.getTexture()->getSize().x * this->tileSprite.getScale().x;
+        if (!tileLength) tileLength = 1;
+
+        tileHeight = this->tileSprite.getTexture()->getSize().y * this->tileSprite.getScale().y;
+        if (!tileHeight) tileHeight = 1;
+    }
 
     int spriteTextureLength = this->aPiece.getLength();
     if (!spriteTextureLength) spriteTextureLength = 1;

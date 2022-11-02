@@ -4,7 +4,7 @@
 
 #define CHESS_LENGTH 8
 
-enum player { black, white, none}; // none should always be last
+enum player { white, black, none}; // none should always be last
 
 class chess : public board
 {

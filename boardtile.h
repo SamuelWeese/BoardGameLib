@@ -7,6 +7,8 @@
 class boardtile
 {
     piece aPiece;
+    int textureHeight;
+    int textureLength;
 public:
 
     sf::Sprite tileSprite;
@@ -16,6 +18,7 @@ public:
     // this is probably a poor design choice, but it is the fast/extendable one
     boardtile(int x , int y);
     ~boardtile();
+    void setTextureByRect(sf::IntRect); // needs a better solution
     bool hasUnit();
     int getMovement();
     void setPiece(piece aPiece);
