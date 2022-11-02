@@ -17,7 +17,7 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
         throw std::runtime_error("Bad tile sprite texture path.");
     }
     sf::IntRect lightSquareRect(0, 0, 100, 100);
-    sf::IntRect darkSquareRect(0, 0, 100, 100);
+    sf::IntRect darkSquareRect(0, 0, 1000, 1000);
 
 
     // setting up piece literals
@@ -44,11 +44,6 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 
     // TODO move all below into a boardtile function for changeing texture
     // this should be implicit, just code could get funky
-    auto windowDimension = aWindow->getSize();
-    int scaleX, scaleY; // windowSize - padding * 2 is to ensure tile only in the "play space"
-    // divided by number of tile, then multiplied by th
-    scaleX = (windowDimension.x - (padding*2))/(float)this->length - padding/10;
-    scaleY = (windowDimension.y - (padding*2))/(float)this->height - padding/10;
     for (int x = 0; x < this->length; x++)
     {
         for (int y = 0; y < this->height; y++)
@@ -58,12 +53,12 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
             if (x%2 + y%2 == 1)
             {
                 gameState[x][y].tileSprite.setTextureRect(darkSquareRect);
-                gameState[x][y].scaleTile(scaleX, scaleY);
+                //gameState[x][y].scaleTile(darkSquareRect.width, darkSquareRect.height);
             }
             else
             {
-                gameState[x][y].tileSprite.setTextureRect(lightSquareRect);
-                gameState[x][y].scaleTile(scaleX, scaleY);
+                //gameState[x][y].tileSprite.setTextureRect(lightSquareRect);
+                //gameState[x][y].scaleTile(tileTexture.getSize().x, tileTexture.getSize().y);
             }
             if (gameState[x][y].flags.size() != 0)
             {

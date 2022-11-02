@@ -3,6 +3,9 @@
 
 #include "boardtile.h"
 
+#include <boost/asio.hpp>
+
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -14,7 +17,6 @@ class board
 {
 protected:
     sf::Texture tileTexture;
-    const float tileScaleFloat = 0.99f;
     int padding; // in px
     boardtile *selectedTile;
     int windowLength;
@@ -39,9 +41,18 @@ public:
     virtual void initialPosition() {return;}
     virtual void placePiece(char, int, int) {return;}
     boardtile* mouseClick(int a, int b);
+
 protected:
     virtual void generateAttackableSquares(boardtile &selectedTile) {return;}
     virtual void movePiece(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile);
+// networking
+public:
+    int connectionStatus;
+    std::string receive_FEN(boost::asio::ip::tcp::socket & socket);
+    void send_FEN(boost::asio::ip::tcp::socket & socket);
+    bool listen();
+    bool connect();
+    bool sendMove();
 
 };
 

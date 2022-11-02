@@ -5,6 +5,7 @@ project(BoardGameLib LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread") # boost flag
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug
@@ -13,7 +14,10 @@ endif()
 
 find_package(SFML 2.5
   COMPONENTS
-    system window graphics network audio REQUIRED)
+    system window graphics network audio REQUIRED
+    )
+find_package( Boost 1.40 COMPONENTS program_options REQUIRED )
+include_directories( ${Boost_INCLUDE_DIR} )
 
 set( PROJECT_CPP_SOURCES
   boardtile.cpp
@@ -30,5 +34,8 @@ set ( TEMP_CPP_TESTING_SOURCES
 add_executable(${PROJECT_NAME} ${PROJECT_CPP_SOURCES} ${TEMP_CPP_TESTING_SOURCES})
 target_link_libraries(
  BoardGameLib
+ LINK_PUBLIC
  sfml-graphics
+ ${Boost_LIBRARIES}
 )
+

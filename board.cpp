@@ -12,7 +12,8 @@ board::board( sf::RenderWindow *passWindow, std::string pathToTexture, int board
     this->selectedTile = nullptr;
 }
 
-void board::setUpInitialBoard()
+void board::setUpInitialBoard() // this needs to be completely replaced, positioning should be done by the player
+// functions kepy should probably be desiredScaleX -> scaleX, and some lighter form of ensuring each tile has the texture (set all to texture maybe)
 {
     auto windowDimension = aWindow->getSize();
     int scaleX, scaleY; // windowSize - padding * 2 is to ensure tile only in the "play space"
@@ -152,4 +153,18 @@ void board::movePiece(int xStartTile, int yStartTile, int xFinalTile, int yFinal
 {
     this->gameState[xFinalTile][yFinalTile].setPiece(gameState[xStartTile][yStartTile].getPiece());
     gameState[xStartTile][yStartTile].clearTile();
+}
+
+// NETWORKING W BOOST
+
+std::string board::receive_FEN(boost::asio::ip::tcp::socket & socket) {
+       boost::asio::streambuf buf;
+       boost::asio::read_until( socket, buf, "\n" );
+       std::string data = boost::asio::buffer_cast<const char*>(buf.data());
+       readFEN(data);
+       return data;
+}
+void board::send_FEN(boost::asio::ip::tcp::socket & socket) {
+       const std::string msg = this->generateFEN() + "\n";
+       boost::asio::write( socket, boost::asio::buffer(msg) );
 }

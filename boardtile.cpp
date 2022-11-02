@@ -26,9 +26,9 @@ bool boardtile::hasUnit()
 void boardtile::setTextureByRect(sf::IntRect aRect)
 {
     tileSprite.setTextureRect(aRect);
-    this->textureLength = aRect.width;
-    this->textureLength = aRect.height;
-    this->scalePiece();
+    //this->textureLength = aRect.width;
+    //this->textureLength = aRect.height;
+    this->scaleTile(aRect.width, aRect.height);
 }
 void boardtile::setPiece(piece aPiece)
 {
@@ -97,7 +97,7 @@ void boardtile::scalePiece()
     if (this->aPiece.tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
 
     int tileLength, tileHeight;
-    if (textureLength > 0 && textureHeight > 0) // redesign this TODO
+    if (false) // redesign this TODO
     {
         tileLength = this->textureLength * this->tileSprite.getScale().x;
         if (!tileLength) tileLength = 1;
