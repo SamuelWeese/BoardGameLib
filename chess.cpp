@@ -16,6 +16,8 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     {
         throw std::runtime_error("Bad tile sprite texture path.");
     }
+    sf::IntRect lightSquareRect(0, 0, 100, 100);
+    sf::IntRect darkSquareRect(0, 0, 100, 100);
 
     // setting up piece literals
     wKing = piece('K', &chessPieces, sf::IntRect(15,25,100,100));
@@ -38,16 +40,27 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 
 
     this->setUpInitialBoard();
+
     for (int x = 0; x < this->length; x++)
     {
         for (int y = 0; y < this->height; y++)
         {
+            // below highlights issues with the default set up
+            // possible solution is allowing functors for default set up?
+            if (x%2 + y%2 == 1)
+            {
+                gameState[x][y].tileSprite.setTextureRect(darkSquareRect);
+            }
+            else
+            {
+                gameState[x][y].tileSprite.setTextureRect(lightSquareRect);
+            }
             if (gameState[x][y].flags.size() != 0)
             {
                 throw std::runtime_error("Flags already exist! Cannot force unhighlighted flag!");
             }
             bool isHighlighted = false;
-            gameState[x][y].flags.push_back(isHighlighted);
+            gameState[x][y].flags.push_back(isHighlighted); // this is constructor needed for setHighlightFlag()
         }
     }
     std::string aFEN = "rnbqkbnr/pppppppp/3pnNpPP/3nNP/bB3bB/2kK1Qq/PPPPPPPP/RNBQKBNR"; // TODO remove later
