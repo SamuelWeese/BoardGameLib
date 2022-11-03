@@ -25,10 +25,10 @@ bool boardtile::hasUnit()
 
 void boardtile::setTextureByRect(sf::IntRect aRect)
 {
+    int anX = this->tileSprite.getGlobalBounds().width; // TODO, this currently doesn't actually return the correct size
+    int anY = this->tileSprite.getGlobalBounds().height;
     tileSprite.setTextureRect(aRect);
-    //this->textureLength = aRect.width;
-    //this->textureLength = aRect.height;
-    this->scaleTile(aRect.width, aRect.height);
+    this->scaleTile(anX, anY);
 }
 void boardtile::setPiece(piece aPiece)
 {
@@ -75,51 +75,37 @@ void boardtile::positionChild(int x, int y)
 
 #include <iostream>
 
-void boardtile::scaleTile(int x, int y)//
+void boardtile::scaleTile(int x, int y)// this scales tile to x by y pixels
 {
     if (this->tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
-
-    int tileLength = this->tileSprite.getTexture()->getSize().x * this->tileSprite.getScale().x;
+    int tileLength, tileHeight;
+    tileLength = this->tileSprite.getGlobalBounds().width;
     if (!tileLength) tileLength = 1;
-
-    int tileHeight = this->tileSprite.getTexture()->getSize().y * this->tileSprite.getScale().y;
+    tileHeight = this->tileSprite.getGlobalBounds().height;
     if (!tileHeight) tileHeight = 1;
 
     float tileScaleLength = (float)x / (float)tileLength;
-    std::cout << tileScaleLength << std::endl;
     float tileScaleHeight = (float)y / (float)tileHeight;
-    std::cout << tileScaleHeight << std::endl;
-    this->tileSprite.setScale(tileScaleLength, tileScaleHeight);
+    this->tileSprite.scale(tileScaleLength, tileScaleHeight);
+    this->scalePiece();
 }
 
 void boardtile::scalePiece()
 {
     if (this->aPiece.tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
 
-    int tileLength, tileHeight;
-    if (false) // redesign this TODO
-    {
-        tileLength = this->textureLength * this->tileSprite.getScale().x;
-        if (!tileLength) tileLength = 1;
+    int tileLength = this->tileSprite.getGlobalBounds().width;
+    int tileHeight = this->tileSprite.getGlobalBounds().height;
 
-        tileHeight = this->textureHeight * this->tileSprite.getScale().y;
-        if (!tileHeight) tileHeight = 1;
-    } else {
-        tileLength = this->tileSprite.getTexture()->getSize().x * this->tileSprite.getScale().x;
-        if (!tileLength) tileLength = 1;
-
-        tileHeight = this->tileSprite.getTexture()->getSize().y * this->tileSprite.getScale().y;
-        if (!tileHeight) tileHeight = 1;
-    }
-
+    // divide by zero is not defined to throw, I believe it return NaN
     int spriteTextureLength = this->aPiece.getLength();
     if (!spriteTextureLength) spriteTextureLength = 1;
 
     int spriteTextureHeight = this->aPiece.getHeight();
     if (!spriteTextureHeight) spriteTextureHeight = 1;
 
-    float spriteScaleLength = 1.f / ((float)spriteTextureLength / (float)tileLength);
-    float spriteScaleHeight = 1.f / ((float)spriteTextureHeight / (float)tileHeight);
+    float spriteScaleLength = (float)tileLength / (float)spriteTextureLength;
+    float spriteScaleHeight = (float)tileHeight / (float)spriteTextureHeight;
 
     this->aPiece.tileSprite.setScale(spriteScaleLength, spriteScaleHeight);
 

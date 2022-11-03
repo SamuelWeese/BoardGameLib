@@ -34,6 +34,7 @@ void board::setUpInitialBoard() // this needs to be completely replaced, positio
 
             gameState[x][y].tileSprite.setTexture(this->tileTexture);
             gameState[x][y].tileSprite.setPosition(positionX, positionY);
+            std::cout << "aX:" << scaleX << " aY:" << scaleY;
             gameState[x][y].scaleTile(scaleX, scaleY);
         }
     }

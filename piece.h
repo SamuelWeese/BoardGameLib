@@ -22,7 +22,7 @@ protected:
     int height;
 public:
 
-    //TODO remove below function
+    //TODO remove below function due to above
     int getLength() { return length;}
     int getHeight() { return height;}
     sf::Sprite tileSprite;

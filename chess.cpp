@@ -16,8 +16,8 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
     {
         throw std::runtime_error("Bad tile sprite texture path.");
     }
-    sf::IntRect lightSquareRect(0, 0, 100, 100);
-    sf::IntRect darkSquareRect(0, 0, 1000, 1000);
+    sf::IntRect lightSquareRect(200, 200, 20, 20);
+    sf::IntRect darkSquareRect(100, 100, 20, 20);
 
 
     // setting up piece literals
@@ -42,6 +42,11 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
 
     this->setUpInitialBoard();
 
+    auto windowDimension =  aWindow->getSize();
+    int scaleX, scaleY; // windowSize - padding * 2 is to ensure tile only in the "play space"
+    // divided by number of tile, then multiplied by th
+    scaleX = (windowDimension.x - (padding*2))/(float)this->length - padding/10;
+    scaleY = (windowDimension.y - (padding*2))/(float)this->height - padding/10;
     // TODO move all below into a boardtile function for changeing texture
     // this should be implicit, just code could get funky
     for (int x = 0; x < this->length; x++)
@@ -52,14 +57,13 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
             // possible solution is allowing functors for default set up?
             if (x%2 + y%2 == 1)
             {
-                gameState[x][y].tileSprite.setTextureRect(darkSquareRect);
-                //gameState[x][y].scaleTile(darkSquareRect.width, darkSquareRect.height);
+                gameState[x][y].setTextureByRect(darkSquareRect);
             }
             else
             {
-                //gameState[x][y].tileSprite.setTextureRect(lightSquareRect);
-                //gameState[x][y].scaleTile(tileTexture.getSize().x, tileTexture.getSize().y);
+                gameState[x][y].setTextureByRect(lightSquareRect);
             }
+            gameState[x][y].scaleTile(scaleX, scaleY);
             if (gameState[x][y].flags.size() != 0)
             {
                 throw std::runtime_error("Flags already exist! Cannot force unhighlighted flag!");

@@ -46,13 +46,11 @@ protected:
     virtual void generateAttackableSquares(boardtile &selectedTile) {return;}
     virtual void movePiece(int xStartTile, int yStartTile, int xFinalTile, int yFinalTile);
 // networking
-public:
+private:
     int connectionStatus;
+public:
     std::string receive_FEN(boost::asio::ip::tcp::socket & socket);
     void send_FEN(boost::asio::ip::tcp::socket & socket);
-    bool listen();
-    bool connect();
-    bool sendMove();
 
 };
 
