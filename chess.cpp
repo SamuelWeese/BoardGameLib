@@ -128,6 +128,7 @@ void chess::readFEN(std::string aStr)
         if (47 < aChar && aChar < 58)
         {
             x += (aChar - 49);
+            continue;
         }
         switch (aChar)
         {
@@ -190,6 +191,169 @@ bool chess::safetyCheck(int x, int y)
 bool chess::checkLegality(std::string gamePosition)
 {
     if (gamePosition.length() == 0) gamePosition = this->generateFEN();
+    char boardState[CHESS_LENGTH][CHESS_LENGTH] = { ASCII_SPACE_DEFAULT_FEN_CHAR };
+    int x = 0;
+    int y = 0;
+    for (auto aChar : gamePosition)
+    {
+        if (aChar == '/')
+        {
+            x = 0;
+            y++;
+            continue;
+        }
+        if (!safetyCheck(x, y))
+        {
+            return false;
+        }
+        if (47 < aChar && aChar < 58)
+        {
+            x += (aChar - 49);
+            continue;
+        }
+        boardState[x][y] = aChar;
+    }
+    // TODO seperate below into C lib
+    char kingChar, pawnChar, rookChar, knightChar, bishopChar, queenChar;
+    int pawnAdder;
+    switch (this->currentPlayerTurn)
+    {
+    case white:
+        kingChar = 'K';
+        pawnChar = 'p';
+        rookChar = 'r';
+        knightChar = 'n';
+        bishopChar = 'b';
+        queenChar = 'q';
+        pawnAdder = -1;
+        break;
+    case black:
+        kingChar = 'k';
+        pawnChar = 'P';
+        rookChar = 'R';
+        knightChar = 'N';
+        bishopChar = 'B';
+        queenChar = 'Q';
+        pawnAdder = 1;
+        break;
+    }
+
+    for (x = 0; x < CHESS_LENGTH; x++)
+    {
+        for (y = 0; y < CHESS_LENGTH; y++)
+        {
+            if (boardState[x][y] == kingChar)
+            {
+                // TODO change safety check to new lib specific function, char array not vector
+                int xPlace, yPlace;
+
+                // PAWN CHECKING
+                yPlace = y+pawnAdder;
+                for(int i = -1; i <= 1; i+=2)
+                {
+                    xPlace = x+i;
+                    if (safetyCheck(xPlace, yPlace))
+                    {
+                        if (boardState[xPlace][yPlace] == pawnChar) return false;
+                    }
+                }
+
+                // KNIGHT CHECKING
+                xPlace = x;
+                yPlace = y;
+                for (int adderIter = -2; adderIter < 4; adderIter += 4)
+                {
+                    for (int singleIter = -1; singleIter < 2; singleIter += 2)
+                    {
+                        xPlace = x + adderIter;
+                        yPlace = y + singleIter;
+                        if (safetyCheck(xPlace, yPlace))
+                        {
+                            if (boardState[x][y] == knightChar) return false;
+                        }
+                        xPlace = x + singleIter;
+                        yPlace = y+ adderIter;
+                        if (safetyCheck(xPlace, yPlace))
+                        {
+                            if (boardState[xPlace][yPlace] == knightChar) return false;
+                        }
+                    }
+                }
+
+                // ROOK and QUEEN CHECKING
+                xPlace = x;
+                yPlace = y;
+                for (int i = xPlace+1; i < CHESS_LENGTH; i++)
+                {
+                    if(!safetyCheck(i,yPlace)) break;
+                    if (boardState[i][yPlace] == rookChar) return false;
+                    if (boardState[i][yPlace] == queenChar) return false;
+                    if (boardState[i][yPlace] != ASCII_SPACE_DEFAULT_FEN_CHAR) break;
+                }
+                for (int i = xPlace-1; i >= 0; i--)
+                {
+                    if(!safetyCheck(i,yPlace)) break;
+                    if (boardState[i][yPlace] == rookChar) return false;
+                    if (boardState[i][yPlace] == queenChar) return false;
+                    if (boardState[i][yPlace] != ASCII_SPACE_DEFAULT_FEN_CHAR) break;
+                }
+                for (int i = yPlace+1; i < CHESS_LENGTH; i++)
+                {
+                    if(!safetyCheck(xPlace,i)) break;
+                    if (boardState[xPlace][i] == rookChar) return false;
+                    if (boardState[xPlace][i] == queenChar) return false;
+                    if (boardState[xPlace][i] != ASCII_SPACE_DEFAULT_FEN_CHAR) break;
+                }
+                for (int i = xPlace-1; i >= 0; i--)
+                {
+                    if(!safetyCheck(xPlace,i)) break;
+                    if (boardState[xPlace][i] == rookChar) return false;
+                    if (boardState[xPlace][i] == queenChar) return false;
+                    if (boardState[xPlace][i] != ASCII_SPACE_DEFAULT_FEN_CHAR) break;
+                }
+
+
+                // BISHOP CHECK
+
+                for (int i = 1; (i+x) < CHESS_LENGTH && (i+y) < CHESS_LENGTH; i++)
+                {
+                    xPlace = x + i;
+                    yPlace = y + i;
+                    if(!safetyCheck(xPlace, yPlace)) break;
+                    if (boardState[xPlace][yPlace] == bishopChar) return false;
+                    if (boardState[xPlace][yPlace] == queenChar) return false;
+                    if (boardState[xPlace][yPlace] != ASCII_SPACE_DEFAULT_FEN_CHAR) break;
+                }
+                for (int i = 1; (x + i) < CHESS_LENGTH && (y - i) >= 0; i++)
+                {
+                    xPlace = x + i;
+                    yPlace = y - i;
+                    if(!safetyCheck(xPlace, yPlace)) break;
+                    if (boardState[xPlace][yPlace] == bishopChar) return false;
+                    if (boardState[xPlace][yPlace] == queenChar) return false;
+                    if (boardState[xPlace][yPlace] != ASCII_SPACE_DEFAULT_FEN_CHAR) break;
+                }
+                for (int i = 1; (x - i) >= 0 && (i+y) < CHESS_LENGTH; i++)
+                {
+                    xPlace = x - i;
+                    yPlace = y + i;
+                    if(!safetyCheck(xPlace, yPlace)) break;
+                    if (boardState[xPlace][yPlace] == bishopChar) return false;
+                    if (boardState[xPlace][yPlace] == queenChar) return false;
+                    if (boardState[xPlace][yPlace] != ASCII_SPACE_DEFAULT_FEN_CHAR) break;
+                }
+                for (int i = 1; (x - i) >= 0 && (y - i) >= 0; i++)
+                {
+                    xPlace = x - i;
+                    yPlace = y - i;
+                    if(!safetyCheck(xPlace, yPlace)) break;
+                    if (boardState[xPlace][yPlace] == bishopChar) return false;
+                    if (boardState[xPlace][yPlace] == queenChar) return false;
+                    if (boardState[xPlace][yPlace] != ASCII_SPACE_DEFAULT_FEN_CHAR) break;
+                }
+            }
+        }
+    }
 
     return true;
 
@@ -477,6 +641,8 @@ void chess::mouseChessClick(int a, int b)
     default:
         this->selectedTile->setHighlightDefault();
     }
-
-
 }
+
+
+
+
