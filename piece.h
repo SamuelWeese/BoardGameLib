@@ -25,16 +25,19 @@ public:
     //TODO remove below function due to above
     int getLength() { return length;}
     int getHeight() { return height;}
+
     sf::Sprite tileSprite;
 
-    piece(); // empty tile piece
+    explicit piece(); // empty tile piece
+    piece(const piece&) = delete;
+    piece & operator = (const piece&) = delete;
     piece(sf::Texture *aTexture); // empty piece constructor
-    virtual ~piece(){return;};
-    piece(char aChar, sf::Texture *aTexture);
-    piece(char aChar, sf::Texture *aTexture, sf::IntRect aRect);
+    ~piece(){return;};
+    explicit piece(char aChar, sf::Texture *aTexture);
+    explicit piece(char aChar, sf::Texture *aTexture, sf::IntRect aRect);
     char getFEN();
     void draw(sf::RenderWindow *aWindow);
-    virtual void setSpriteTexture(sf::Texture *aTexture);
+    void setSpriteTexture(sf::Texture *aTexture);
     void setSpriteTextureRect(sf::Texture *aTexture, sf::IntRect aRect);
 };
 

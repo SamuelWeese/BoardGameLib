@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(BoardGameLib LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread") # boost flag
@@ -50,10 +50,10 @@ set(copy_file_name "*.png")
 #    TARGET ${PROJECT_NAME} POST_BUILD
 #    COMMAND ${CMAKE_COMMAND} -E make_directory ${copy_dest_dir}
 #)
-#add_custom_command(
-#    TARGET ${PROJECT_NAME} POST_BUILD
-#    COMMAND ${CMAKE_COMMAND} -E copy "${copy_source_dir}/${copy_file_name}" "${copy_dest_dir}/${copy_file_name}"
-#    COMMENT "Copying ${copy_file_name} to tmp directory"
-#)
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy "${copy_source_dir}/${copy_file_name}" "${copy_dest_dir}/${copy_file_name}"
+    COMMENT "Copying ${copy_file_name} to tmp directory"
+)
 
 

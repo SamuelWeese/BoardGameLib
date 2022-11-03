@@ -4,17 +4,18 @@ boardtile::boardtile(int x, int y)//, sf::Texture tileTexture)
 {
     this->xPos = x;
     this->yPos = y;
-    this->aPiece = piece();
+    this->aPiece = std::make_unique<piece>();
 }
 
 boardtile::~boardtile()
 {
+    //delete aPiece; // very suprised val grind doesn't "catch this"
     return;
 }
 
 bool boardtile::hasUnit()
 {
-    if (this->aPiece.getFEN() == ASCII_SPACE_DEFAULT_FEN_CHAR)
+    if (this->aPiece->getFEN() == ASCII_SPACE_DEFAULT_FEN_CHAR)
     {
         return false;
     }
@@ -30,13 +31,13 @@ void boardtile::setTextureByRect(sf::IntRect aRect)
 }
 void boardtile::setPiece(piece aPiece)
 {
-    this->aPiece = aPiece;
+    this->aPiece = std::make_unique<piece>(aPiece);
     this->positionChild();
     this->scalePiece();
 }
 void boardtile::clearTile()
 {
-    this->aPiece = piece();
+    this->aPiece = std::make_unique<piece>();
     this->positionChild();
 }
 
@@ -57,18 +58,18 @@ void boardtile::setHighlightAttackable()
 
 void boardtile::setHighlightMoveable()
 {
-    this->tileSprite.setColor(sf::Color(0,0,255,128));
+    this->tileSprite.setColor(sf::Color(0,0,128,128));
 }
 
 
 void boardtile::positionChild()
 {
     auto coordinates = this->tileSprite.getPosition();
-    this->aPiece.tileSprite.setPosition(coordinates.x, coordinates.y);
+    this->aPiece->tileSprite.setPosition(coordinates.x, coordinates.y);
 }
 void boardtile::positionChild(int x, int y)
 {
-    this->aPiece.tileSprite.setPosition(x, y);
+    this->aPiece->tileSprite.setPosition(x, y);
 }
 
 #include <iostream>
@@ -90,27 +91,27 @@ void boardtile::scaleTile(int x, int y)// this scales tile to x by y pixels
 
 void boardtile::scalePiece()
 {
-    if (this->aPiece.tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
+    if (this->aPiece->tileSprite.getTexture() == nullptr) return; // this should never be necessary, but users are users
 
     int tileLength = this->tileSprite.getGlobalBounds().width;
     int tileHeight = this->tileSprite.getGlobalBounds().height;
 
-    // divide by zero is not defined to throw, I believe it return NaN
-    int spriteTextureLength = this->aPiece.getLength();
+    // divide by zero is not defined to throw, returns inf (NaN) for IEEE floats
+    int spriteTextureLength = this->aPiece->getLength();
     if (!spriteTextureLength) spriteTextureLength = 1;
 
-    int spriteTextureHeight = this->aPiece.getHeight();
+    int spriteTextureHeight = this->aPiece->getHeight();
     if (!spriteTextureHeight) spriteTextureHeight = 1;
 
     float spriteScaleLength = (float)tileLength / (float)spriteTextureLength;
     float spriteScaleHeight = (float)tileHeight / (float)spriteTextureHeight;
 
-    this->aPiece.tileSprite.setScale(spriteScaleLength, spriteScaleHeight);
+    this->aPiece->tileSprite.setScale(spriteScaleLength, spriteScaleHeight);
 
 }
 
 void boardtile::draw(sf::RenderWindow *aWindow)
 {
     aWindow->draw(this->tileSprite);
-    this->aPiece.draw(aWindow);
+    this->aPiece->draw(aWindow);
 }

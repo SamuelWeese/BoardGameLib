@@ -2,11 +2,13 @@
 #define BOARDTILE_H
 
 #include "piece.h"
+
+#include <memory>
 #include <vector>
 
 class boardtile
 {
-    piece aPiece;
+    std::unique_ptr<piece> aPiece;
 
 public:
 
@@ -26,8 +28,8 @@ public:
     void setHighlightSelected();
     void setHighlightAttackable();
     void setHighlightMoveable();
-    char getFEN(){ return this->aPiece.getFEN();};
-    piece getPiece() {return aPiece;};
+    char getFEN(){ return this->aPiece->getFEN();};
+    piece getPiece() {return *aPiece;};
     void positionChild(); void positionChild(int x, int y);
     void scaleTile(int x, int y);
     void scalePiece();

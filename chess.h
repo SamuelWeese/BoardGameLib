@@ -43,7 +43,7 @@ class chess : public board
 
     bool setHighlightFlag(int x, int y, bool flagStatus = true);
     void clearBoardHighlightFlag();
-    bool checkLegality(std::string gamePosition = ""); // [this](){this->generateFEN();} works dependent on cpp version
+    bool checkLegality(std::string gamePosition = ""); // [this](){this->generateFEN();} works dependent on cpp version (c11)
     bool checkLegalityAlgebraic(std::string aMove);
 
 public:

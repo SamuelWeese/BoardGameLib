@@ -6,6 +6,8 @@ piece::piece()
     return;
 }
 
+
+
 piece::piece(char aChar, sf::Texture *aTexture)
 {
     if (aChar < 33 ||
