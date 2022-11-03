@@ -5,8 +5,6 @@ boardtile::boardtile(int x, int y)//, sf::Texture tileTexture)
     this->xPos = x;
     this->yPos = y;
     this->aPiece = piece();
-    this->textureHeight = -1;
-    this->textureLength = -1;
 }
 
 boardtile::~boardtile()

@@ -190,8 +190,14 @@ bool chess::safetyCheck(int x, int y)
 bool chess::checkLegality(std::string gamePosition)
 {
     if (gamePosition.length() == 0) gamePosition = this->generateFEN();
+
     return true;
 
+}
+
+bool chess::checkLegalityAlgebraic(std::string aMove)
+{
+    return false;
 }
 
 bool chess::setTileHighlight(int x, int y)

@@ -30,12 +30,30 @@ set ( TEMP_CPP_TESTING_SOURCES
   chess.cpp
   )
 
-
 add_executable(${PROJECT_NAME} ${PROJECT_CPP_SOURCES} ${TEMP_CPP_TESTING_SOURCES})
+
 target_link_libraries(
- BoardGameLib
+ ${PROJECT_NAME}
  LINK_PUBLIC
  sfml-graphics
  ${Boost_LIBRARIES}
 )
+
+
+# Copy <filename> to build directory
+
+set(copy_source_dir "${CMAKE_SOURCE_DIR}/resources/")
+set(copy_dest_dir "/tmp/")
+set(copy_file_name "*.png")
+
+#add_custom_command(
+#    TARGET ${PROJECT_NAME} POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E make_directory ${copy_dest_dir}
+#)
+#add_custom_command(
+#    TARGET ${PROJECT_NAME} POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy "${copy_source_dir}/${copy_file_name}" "${copy_dest_dir}/${copy_file_name}"
+#    COMMENT "Copying ${copy_file_name} to tmp directory"
+#)
+
 

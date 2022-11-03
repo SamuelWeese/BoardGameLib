@@ -17,7 +17,6 @@ void board::setUpInitialBoard() // this needs to be completely replaced, positio
 {
     auto windowDimension = aWindow->getSize();
     int scaleX, scaleY; // windowSize - padding * 2 is to ensure tile only in the "play space"
-    // divided by number of tile, then multiplied by th
     scaleX = (windowDimension.x - (padding*2))/(float)this->length - padding/10;
     scaleY = (windowDimension.y - (padding*2))/(float)this->height - padding/10;
 

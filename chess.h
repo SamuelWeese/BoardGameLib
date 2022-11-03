@@ -32,6 +32,7 @@ class chess : public board
 
     //
     bool safetyCheck(int x, int y);
+
     // functors
     void pawnMovement();
     void knightMovement();
@@ -39,9 +40,11 @@ class chess : public board
     void bishopMovement();
     void queenMovement();
     void kingMovement();
+
     bool setHighlightFlag(int x, int y, bool flagStatus = true);
     void clearBoardHighlightFlag();
     bool checkLegality(std::string gamePosition = ""); // [this](){this->generateFEN();} works dependent on cpp version
+    bool checkLegalityAlgebraic(std::string aMove);
 
 public:
     chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");

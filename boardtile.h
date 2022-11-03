@@ -7,8 +7,7 @@
 class boardtile
 {
     piece aPiece;
-    int textureHeight;
-    int textureLength;
+
 public:
 
     sf::Sprite tileSprite;
