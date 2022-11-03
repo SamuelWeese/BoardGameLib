@@ -187,6 +187,13 @@ bool chess::safetyCheck(int x, int y)
     return true;
 }
 
+bool chess::checkLegality(std::string gamePosition)
+{
+    if (gamePosition.length() == 0) gamePosition = this->generateFEN();
+    return true;
+
+}
+
 bool chess::setTileHighlight(int x, int y)
 {
     if (safetyCheck(x, y))
@@ -414,24 +421,17 @@ void chess::mouseChessClick(int a, int b)
 {
     // design wise not sure how much should be incorporated to board
     // I should probably redesign this later TODO
-    int oldX, oldY;
-    if (this->selectedTile != nullptr)
-    {
-        oldX = this->selectedTile->xPos;
-        oldY = this->selectedTile->yPos;
-    }
+    this->oldSelection = selectedTile;
     mouseClick(a, b);
-    if (this->selectedTile != nullptr)
-    {
-        if (oldX == this->selectedTile->xPos && oldY == this->selectedTile->yPos) return;
-    }
+    if (oldSelection == selectedTile) return;
     clearBoardHighlights();
     if (this->selectedTile->flags[0] == true && this->selectedTile != nullptr)
     {
-        movePiece(oldX, oldY, this->selectedTile->xPos, this->selectedTile->yPos);
+        movePiece(oldSelection->xPos, oldSelection->yPos, this->selectedTile->xPos, this->selectedTile->yPos);
         this->iteratePlayer();
         this->clearBoardHighlightFlag();
         this->selectedTile = nullptr;
+        this->oldSelection = nullptr;
         return;
     }
     char aChar = this->selectedTile->getFEN();

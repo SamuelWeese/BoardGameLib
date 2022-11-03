@@ -167,5 +167,5 @@ std::string board::receive_FEN(boost::asio::ip::tcp::socket & socket) {
 }
 void board::send_FEN(boost::asio::ip::tcp::socket & socket) {
        const std::string msg = this->generateFEN() + "\n";
-       boost::asio::write( socket, boost::asio::buffer(msg) );
+       boost::asio::write(socket, boost::asio::buffer(msg) );
 }

@@ -9,6 +9,7 @@ enum player { white, black, none}; // none should always be last
 class chess : public board
 {
     player currentPlayerTurn;
+    bool aiEnabled;
     sf::Texture chessPieces;
     // below should probably be some form of const static for vanilla chess, but these pieces are extendable
     piece wPawn;
@@ -24,6 +25,8 @@ class chess : public board
     piece bQueen;
     piece bKing;
 
+    boardtile *oldSelection;
+
     player getPlayer(char aChar);
     void iteratePlayer();
 
@@ -38,9 +41,10 @@ class chess : public board
     void kingMovement();
     bool setHighlightFlag(int x, int y, bool flagStatus = true);
     void clearBoardHighlightFlag();
+    bool checkLegality(std::string gamePosition = ""); // [this](){this->generateFEN();} works dependent on cpp version
 
 public:
-    explicit chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+    chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
     bool setTileHighlight(int x, int y);
     bool setMoveHighlight(int x, int y);
     void setAttackHighlight(int x, int y);
