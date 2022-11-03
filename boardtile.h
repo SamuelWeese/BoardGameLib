@@ -6,7 +6,7 @@
 
 class boardtile
 {
-    piece aPiece;
+    piece *aPiece;
 
 public:
 
@@ -26,8 +26,8 @@ public:
     void setHighlightSelected();
     void setHighlightAttackable();
     void setHighlightMoveable();
-    char getFEN(){ return this->aPiece.getFEN();};
-    piece getPiece() {return aPiece;};
+    char getFEN(){ return this->aPiece->getFEN();};
+    piece getPiece() {return *aPiece;};
     void positionChild(); void positionChild(int x, int y);
     void scaleTile(int x, int y);
     void scalePiece();
