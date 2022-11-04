@@ -72,8 +72,9 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
             gameState[x][y].flags.push_back(isHighlighted); // this is constructor needed for setHighlightFlag()
         }
     }
-    std::string aFEN = "rnbqkbnr/pppppppp/3pnNpPP/3nNP/bB3bB/2kK1Qq/PPPPPPPP/RNBQKBNR"; // TODO remove later
+    std::string aFEN = "/ppP/3pnNpPP/3nNP/bB3bB/2kK1Qq/pPp3PP/"; // TODO remove later
     this->readFEN(aFEN);
+    this->currentFEN = generateFEN();
 }
 
 player chess::getPlayer(char aChar)
@@ -177,11 +178,11 @@ void chess::readFEN(std::string aStr)
 
 bool chess::safetyCheck(int x, int y)
 {
-    if (x >= gameState.size())
+    if (x >= gameState.size() || x < 0)
     {
         return false;
     }
-    if (y >= gameState[x].size())
+    if (y >= gameState[x].size() || y < 0)
     {
         return false;
     }
@@ -244,6 +245,7 @@ bool chess::checkLegality(std::string gamePosition)
         {
             if (boardState[x][y] == kingChar)
             {
+                std::cout << boardState[x][y];
                 // TODO change safety check to new lib specific function, char array not vector
                 int xPlace, yPlace;
 
@@ -364,6 +366,40 @@ bool chess::checkLegalityAlgebraic(std::string aMove)
     return false;
 }
 
+std::string chess::onlyFENMove(int x1, int y1, int x2, int y2, std::string aStr)
+{
+    char movingPiece = ASCII_SPACE_DEFAULT_FEN_CHAR;
+    int x = 0;
+    int y = 0;
+    int iteratorTracker = 0;
+    for (int i = 0; i < aStr.length(); i++)
+    {
+        if (aStr[i] == '/')
+        {
+            x = 0;
+            y++;
+            continue;
+        }
+        // removed safety check here, this could cause some real issues TODO
+        if (47 < aStr[i] && aStr[i] < 58)
+        {
+            x += (aStr[i] - 49);
+            continue;
+        }
+        if (x == x1 && y == y1)
+        {
+            movingPiece = aStr[i];
+            aStr[i] = ASCII_SPACE_DEFAULT_FEN_CHAR;
+        }
+        if (x == x2 && y == y2)
+        {
+            iteratorTracker = i;
+        }
+    }
+    aStr[iteratorTracker] = movingPiece;
+    return aStr;
+}
+
 bool chess::setTileHighlight(int x, int y)
 {
     if (safetyCheck(x, y))
@@ -440,6 +476,7 @@ void chess::clearBoardHighlightFlag()
 
 void chess::pawnMovement()
 {
+    std::string legalityStr;
     player pawnOwner = getPlayer(this->selectedTile->getFEN());
     int adder = 1;
     int pawnX = this->selectedTile->xPos;
@@ -453,11 +490,15 @@ void chess::pawnMovement()
     for (int i = -1; i < 2; i+=2)
     {
         positionX = pawnX + i;
-        setAttackHighlight(positionX, positionY);
+        legalityStr = this->currentFEN;
+        if (checkLegality(onlyFENMove(pawnX, pawnY, positionX, positionY)))
+        {
+            setAttackHighlight(positionX, positionY);
+        }
     }
     // checking next to back row
     if (!movable) {return;}
-    if (pawnOwner == white && gameState[positionX].size() - 2) // signifies not moved
+    if (pawnOwner == white && pawnY == gameState[positionX].size() - 2) // signifies not moved
     {
         adder = adder * 2;
         positionY = adder + pawnY;
@@ -581,8 +622,10 @@ void chess::kingMovement()
     {
         for (int j = -1; j <= 1; j++)
         {
-
-            setTileHighlight(kingX + i, kingY + j);
+            if (checkLegality(onlyFENMove(kingX, kingY, kingX + i, kingY + j)))
+            {
+                setTileHighlight(kingX + i, kingY + j);
+            }
         }
     }
 }
@@ -602,6 +645,7 @@ void chess::mouseChessClick(int a, int b)
         this->clearBoardHighlightFlag();
         this->selectedTile = nullptr;
         this->oldSelection = nullptr;
+        this->currentFEN = generateFEN();
         return;
     }
     char aChar = this->selectedTile->getFEN();

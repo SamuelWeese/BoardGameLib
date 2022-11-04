@@ -43,8 +43,11 @@ class chess : public board
 
     bool setHighlightFlag(int x, int y, bool flagStatus = true);
     void clearBoardHighlightFlag();
+
+    std::string currentFEN;
     bool checkLegality(std::string gamePosition = ""); // [this](){this->generateFEN();} works dependent on cpp version
     bool checkLegalityAlgebraic(std::string aMove);
+    std::string onlyFENMove(int x, int y, int x2, int y2, std::string aStr ="");
 
 public:
     chess(sf::RenderWindow *aWindow, std::string FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
