@@ -127,10 +127,13 @@ std::string board::generateFEN()
 {
     std::string retStr = "";
     unsigned short C; // terrible naming convention for a joke
-    for (int x = 0; x < gameState.size(); x++)
+    int y = 0;
+    while (y < height)
     {
-        for (int y = 0; y < gameState[x].size(); y++)
+        for (int x = 0; x < gameState.size(); x++)
         {
+            if (y >= gameState[x].size()) continue;
+
             char returnedFEN = gameState[x][y].getFEN();
             if (returnedFEN == ASCII_SPACE_DEFAULT_FEN_CHAR)
             {
@@ -144,7 +147,14 @@ std::string board::generateFEN()
             }
             retStr += gameState[x][y].getFEN();
         }
+        if (C > 0)
+        {
+            retStr += std::to_string(C);
+            C = 0;
+        }
         retStr += "/";
+
+        y++;
     }
     return retStr;
 }

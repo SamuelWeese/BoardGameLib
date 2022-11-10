@@ -72,7 +72,7 @@ chess::chess(sf::RenderWindow *aWindow, std::string FEN) : board(aWindow)
             gameState[x][y].flags.push_back(isHighlighted); // this is constructor needed for setHighlightFlag()
         }
     }
-    std::string aFEN = "/ppP/3pnNpPP/3nNP/bB3bB/2kK1Qq/pPp3PP/"; // TODO remove later
+    std::string aFEN = "/ppP/3pnNpPP/3nNP/bB3bB/21Qq/pPp3PP/k6K"; // TODO remove later
     this->readFEN(aFEN);
     this->currentFEN = generateFEN();
 }
@@ -191,12 +191,15 @@ bool chess::safetyCheck(int x, int y)
 
 bool chess::checkLegality(std::string gamePosition)
 {
+    std::cout << gamePosition << std::endl;
     if (gamePosition.length() == 0) gamePosition = this->generateFEN();
+    std::cout << "Final Position:" <<gamePosition << std::endl;
     char boardState[CHESS_LENGTH][CHESS_LENGTH] = { ASCII_SPACE_DEFAULT_FEN_CHAR };
     int x = 0;
     int y = 0;
-    for (auto aChar : gamePosition)
+    for (int i = 0; i < gamePosition.length(); i++)
     {
+        char aChar = gamePosition[i];
         if (aChar == '/')
         {
             x = 0;
