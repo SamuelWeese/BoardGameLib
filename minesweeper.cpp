@@ -146,8 +146,8 @@ void minesweeper::activateTile(u_int x, u_int y)
         yCoord = 20;
         break;
     case 1:
-        xCoord = 10;
-        yCoord = 40;
+        xCoord = 00;
+        yCoord = 00;
         break;
     case 2:
         xCoord = 0;
@@ -206,8 +206,7 @@ void minesweeper::groupShow(u_int x, u_int y)
                 continue;
             if(!safetyCheck(yIndex, 0, size))
                 continue;
-            if (this->boardState[xIndex][yIndex] == 0 && this->boardVisible[xIndex][yIndex] == false)
-                groupShow(xIndex, yIndex);
+            activateTile(xIndex, yIndex);
         }
     }
 
@@ -269,16 +268,32 @@ void minesweeper::printAnswer()
 }
 
 
-void minesweeper::mouse(u_int x, u_int y)
+void minesweeper::mouse(sf::Event anEvent)
 {
+    u_int x = anEvent.mouseButton.x;
+    u_int y = anEvent.mouseButton.y;
     auto windowSize = this->window->getSize();
     u_int tileLength = ((windowSize.x - this->padding*2) / size);
     u_int tileHeight = ((windowSize.y - this->padding*2) / size);
     u_int x_iter = x / tileLength;
     u_int y_iter = y / tileHeight;
     std::cout << "x:" <<x_iter << '\t' << "y:" << y_iter << '\t' << "Val:" << boardState[x_iter][y_iter] << '\n';
-    this->activateTile(x_iter, y_iter);
+    if (anEvent.mouseButton.button == sf::Mouse::Right)
+        return this->flag(x_iter, y_iter);
+    if (anEvent.mouseButton.button == sf::Mouse::Left)
+        this->activateTile(x_iter, y_iter);
 
+}
+
+void minesweeper::flag(u_int x, u_int y)
+{
+    if(!safetyCheck(x, 0, size))
+        return;
+    if(!safetyCheck(y, 0, size))
+        return;
+    u_short xCoord = 10;
+    u_short yCoord = 40;
+    spriteVector[x][y].setTextureRect(sf::IntRect(xCoord, yCoord, xCoord+10,yCoord+10));
 }
 
 

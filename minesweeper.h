@@ -34,10 +34,11 @@ public:
     void print();
     void printAnswer();
 
-    void mouse(u_int x, u_int y);
+    void mouse(sf::Event );
 
     void groupShow(u_int x, u_int y);
     void activateTile(u_int x, u_int y);
+    void flag(u_int x, u_int y);
 
 
     void endGame();

@@ -7,7 +7,7 @@ int main()
     const static int windowSizeHeight = 720;
     const static int windowSizeLength = 720;
     sf::RenderWindow window(sf::VideoMode(windowSizeLength, windowSizeHeight), "SFML window");
-    minesweeper aGame(&window, 5, 10);
+    minesweeper aGame(&window, 10, 10);
     aGame.createRBoard();
     aGame.printAnswer();
     window.setFramerateLimit(60);
@@ -25,15 +25,7 @@ int main()
             case sf::Event::Resized:
                 break;
             case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Right)
-                {
-                    std::cout << "the right button was pressed" << std::endl;
-                    std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-                    std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-                    //aBoard.mouseChessClick(event.mouseButton.x,event.mouseButton.y);\
-
-                    aGame.mouse(event.mouseButton.x, event.mouseButton.y);
-                }
+                aGame.mouse(event);
                 break;
             }
 
