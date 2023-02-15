@@ -193,7 +193,7 @@ bool chess::checkLegality(std::string gamePosition)
 {
     std::cout << gamePosition << std::endl;
     if (gamePosition.length() == 0) gamePosition = this->generateFEN();
-    std::cout << "Final Position:" <<gamePosition << std::endl;
+    std::cout << "Final Position:" << gamePosition << std::endl;
     char boardState[CHESS_LENGTH][CHESS_LENGTH] = { ASCII_SPACE_DEFAULT_FEN_CHAR };
     int x = 0;
     int y = 0;
@@ -371,6 +371,7 @@ bool chess::checkLegalityAlgebraic(std::string aMove)
 
 std::string chess::onlyFENMove(int x1, int y1, int x2, int y2, std::string aStr)
 {
+    if (aStr.length() == 0) aStr = generateFEN();
     char movingPiece = ASCII_SPACE_DEFAULT_FEN_CHAR;
     int x = 0;
     int y = 0;
@@ -398,8 +399,10 @@ std::string chess::onlyFENMove(int x1, int y1, int x2, int y2, std::string aStr)
         {
             iteratorTracker = i;
         }
+        x++;
     }
     aStr[iteratorTracker] = movingPiece;
+    std::cout << "onlyFEN move: "<< aStr << std::endl;
     return aStr;
 }
 

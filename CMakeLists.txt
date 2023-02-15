@@ -28,6 +28,7 @@ set( PROJECT_CPP_SOURCES
 set ( TEMP_CPP_TESTING_SOURCES
   main.cpp
   chess.cpp
+  minesweeper.cpp
   )
 
 add_executable(${PROJECT_NAME} ${PROJECT_CPP_SOURCES} ${TEMP_CPP_TESTING_SOURCES})
@@ -39,19 +40,4 @@ target_link_libraries(
  ${Boost_LIBRARIES}
 )
 
-
-# Copy <filename> to build directory
-
-set(copy_source_dir "${CMAKE_SOURCE_DIR}/resources/")
-set(copy_dest_dir "/tmp/")
-set(copy_file_name "tiletexture.png")
-
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${copy_dest_dir}
-)
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "${copy_source_dir}/${copy_file_name}" "${copy_dest_dir}/${copy_file_name}"
-    COMMENT "Copying ${copy_file_name} to tmp directory"
-)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/sprite_sheet.png "/tmp/sprite_sheet.png" COPYONLY)

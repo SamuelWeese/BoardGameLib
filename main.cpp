@@ -1,12 +1,17 @@
 #include "chess.h"
 #include <iostream>
+#include "minesweeper.h"
 
 int main()
 {
     const static int windowSizeHeight = 720;
     const static int windowSizeLength = 720;
     sf::RenderWindow window(sf::VideoMode(windowSizeLength, windowSizeHeight), "SFML window");
-    chess aBoard(&window);
+    minesweeper aGame(&window, 5, 10);
+    aGame.createRBoard();
+    aGame.printAnswer();
+    window.setFramerateLimit(60);
+    /*chess aBoard(&window);*/
     while (window.isOpen())
     {
         sf::Event event;
@@ -25,7 +30,9 @@ int main()
                     std::cout << "the right button was pressed" << std::endl;
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-                    aBoard.mouseChessClick(event.mouseButton.x,event.mouseButton.y);
+                    //aBoard.mouseChessClick(event.mouseButton.x,event.mouseButton.y);\
+
+                    aGame.mouse(event.mouseButton.x, event.mouseButton.y);
                 }
                 break;
             }
@@ -37,7 +44,8 @@ int main()
 
         window.clear();
 
-        aBoard.draw();
+        aGame.draw();
+        //aBoard.draw();
 
         window.display();
     }
