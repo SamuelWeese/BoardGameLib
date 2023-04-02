@@ -40,7 +40,10 @@ public:
     virtual void readFEN(std::string) {return;} // add default lookup function later
     virtual void initialPosition() {return;}
     virtual void placePiece(char, int, int) {return;}
-    boardtile* mouseClick(int a, int b);
+
+    virtual boardtile* mouseClick(int a, int b);
+
+    virtual void eventHandler(sf::Event event);
 
 protected:
     virtual void generateAttackableSquares(boardtile &selectedTile) {return;}

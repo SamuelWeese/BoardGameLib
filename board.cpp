@@ -85,6 +85,17 @@ void board::draw()
 }
 
 #include <iostream>
+void board::eventHandler(sf::Event event)
+{
+    switch (event.type)
+    {
+    case sf::Event::MouseButtonPressed:
+        this->mouseClick(event.mouseButton.x,event.mouseButton.y);
+        break;
+    default:
+        break;
+    }
+}
 
 boardtile *board::mouseClick(int xPos, int yPos)
 {

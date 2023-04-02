@@ -28,7 +28,6 @@ set( PROJECT_CPP_SOURCES
 set ( TEMP_CPP_TESTING_SOURCES
   main.cpp
   chess.cpp
-  minesweeper.cpp
   )
 
 add_executable(${PROJECT_NAME} ${PROJECT_CPP_SOURCES} ${TEMP_CPP_TESTING_SOURCES})
@@ -40,4 +39,8 @@ target_link_libraries(
  ${Boost_LIBRARIES}
 )
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/sprite_sheet.png "/tmp/sprite_sheet.png" COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/tiletexture.png "/tmp/tiletexture.png" COPYONLY)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/chessPieces.png "/tmp/chessPieces.png" COPYONLY)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/chessTiles.png "/tmp/chessTiles.png" COPYONLY)
