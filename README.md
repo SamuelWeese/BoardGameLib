@@ -10,4 +10,5 @@ Chess using BoardGameLib: /* TODO, need to split repo */
 
 
 Piece legality checking:
+
 ![image](https://media.discordapp.net/attachments/1091112556141215784/1092816158350127225/image.png?width=629&height=629)
