@@ -54,6 +54,7 @@ public:
     bool setTileHighlight(int x, int y);
     bool setMoveHighlight(int x, int y);
     void setAttackHighlight(int x, int y);
+    void eventHandler(sf::Event) override;
     void mouseChessClick(int a, int b);
 
 

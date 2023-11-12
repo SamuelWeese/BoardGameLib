@@ -1,6 +1,5 @@
 #include "chess.h"
 #include <iostream>
-#include "minesweeper.h"
 
 int main()
 {

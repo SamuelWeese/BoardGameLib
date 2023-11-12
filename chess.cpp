@@ -693,6 +693,17 @@ void chess::mouseChessClick(int a, int b)
     }
 }
 
+void chess::eventHandler(sf::Event event)
+{
+    switch (event.type)
+    {
+    case sf::Event::MouseButtonPressed:
+        this->mouseChessClick(event.mouseButton.x,event.mouseButton.y);
+        break;
+    default:
+        break;
+    }
+}
 
 
 

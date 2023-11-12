@@ -43,24 +43,28 @@ void boardtile::clearTile()
     this->positionChild();
 }
 
+#define bright 255
+#define half_bright bright/2
+#define quarter_bright bright/4
+
 void boardtile::setHighlightDefault()
 {
-    this->tileSprite.setColor(sf::Color(255,255,255,128));// white with it being 1/2 transparent
+    this->tileSprite.setColor(sf::Color(bright,bright,bright,bright));// white with it being 1/2 transparent
 }
 
 void boardtile::setHighlightSelected()
 {
-    this->tileSprite.setColor(sf::Color(255,255,0,128));
+    this->tileSprite.setColor(sf::Color(bright,bright,half_bright,bright));
 }
 
 void boardtile::setHighlightAttackable()
 {
-    this->tileSprite.setColor(sf::Color(255,0,255,128));
+    this->tileSprite.setColor(sf::Color(bright,quarter_bright,bright,bright));
 }
 
 void boardtile::setHighlightMoveable()
 {
-    this->tileSprite.setColor(sf::Color(0,0,255,128));
+    this->tileSprite.setColor(sf::Color(quarter_bright,bright,bright,bright));
 }
 
 
